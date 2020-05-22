@@ -11,6 +11,6 @@ declare(strict_types=1);
  */
 namespace Qbhy\HyperfAuth;
 
-class GuardException extends \Exception
+class UserProviderException extends \Exception
 {
 }

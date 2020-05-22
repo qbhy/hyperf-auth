@@ -9,18 +9,30 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
-namespace Qbhy\HyperfAuth;
+namespace HyperfTest;
 
-use Hyperf\Database\Model\Model;
+use Qbhy\HyperfAuth\Authenticatable;
 
-/**
- * Trait AuthAbility.
- * @mixin Authenticatable|Model
- */
-trait AuthAbility
+class DemoUser implements Authenticatable
 {
+    public $id;
+
+    /**
+     * DemoUser constructor.
+     * @param $id
+     */
+    public function __construct($id)
+    {
+        $this->id = $id;
+    }
+
+    public function getKey()
+    {
+        return $this->id;
+    }
+
     public static function retrieveByKey($key): ?Authenticatable
     {
-        return self::query()->find($key);
+        return new DemoUser($key);
     }
 }

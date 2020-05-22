@@ -4,20 +4,20 @@ declare(strict_types=1);
 /**
  * This file is part of qbhy/hyperf-auth.
  *
- * @link     https://www.hyperf.io
- * @document https://doc.hyperf.io
- * @contact  group@hyperf.io
- * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
+ * @link     https://github.com/qbhy/hyperf-auth
+ * @document https://github.com/qbhy/hyperf-auth/blob/master/README.md
+ * @contact  qbhy0715@qq.com
+ * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
 namespace Qbhy\HyperfAuth\Guard;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
-use Qbhy\HyperfAuth\AuthGuard;
+use Qbhy\HyperfAuth\UserProvider;
 use Qbhy\SimpleJwt\JWTManager;
 
-class JwtGuard extends AuthGuard
+class JwtGuard extends AbstractAuthGuard
 {
     /**
      * @var JWTManager
@@ -30,11 +30,11 @@ class JwtGuard extends AuthGuard
     protected $request;
 
     /**
-     * JwtGuard constructor.
+     * JwtGuardAbstract constructor.
      */
-    public function __construct(array $config, RequestInterface $request)
+    public function __construct(array $config, string $name, UserProvider $userProvider, RequestInterface $request)
     {
-        parent::__construct($config);
+        parent::__construct($config, $name, $userProvider);
         $this->jwtManager = new JWTManager($config['secret'] ?? 'secret');
         $this->request = $request;
     }
@@ -58,23 +58,24 @@ class JwtGuard extends AuthGuard
         return $this->jwtManager->make(['uid' => $user->getKey()])->token();
     }
 
-    public function user(): ?Authenticatable
+    public function user(?string $token = null): ?Authenticatable
     {
-        if ($token = $this->parseToken()) {
+        $token = $token ?? $this->parseToken();
+        if ($token) {
             $jwt = $this->jwtManager->parse($token);
             $uid = $jwt->getPayload()['uid'] ?? null;
-            return $uid ? call_user_func_array([$this->config['model'], 'findFromKey'], [$uid]) : null;
+            return $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
         }
 
         return null;
     }
 
-    public function check(): bool
-    {
-        return $this->user() instanceof Authenticatable;
-    }
-
     public function logout()
     {
+    }
+
+    public function getJwtManager(): JWTManager
+    {
+        return $this->jwtManager;
     }
 }
