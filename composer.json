@@ -1,0 +1,57 @@
+{
+    "name": "96qbhy/hyperf-auth",
+    "description": "hyperf 的 auth 组件",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "hyperf"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Qbhy\\HyperfAuth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HyperfTest\\": "tests"
+        }
+    },
+    "require": {
+        "php": ">=7.2",
+        "ext-swoole": ">=4.4",
+        "96qbhy/simple-jwt": "^1.0",
+        "hyperf/di": "1.1.*",
+        "hyperf/framework": "^1.1"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "phpstan/phpstan": "^0.10.5",
+        "hyperf/testing": "1.1.*",
+        "swoft/swoole-ide-helper": "dev-master",
+        "brainmaestro/composer-git-hooks": "^2.8"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "co-phpunit -c phpunit.xml --colors=always",
+        "analyse": "phpstan analyse --memory-limit 300M -l 0 ./src",
+        "cs-fix": "php-cs-fixer fix $1",
+        "post-install-cmd": "cghooks add --ignore-lock",
+        "post-update-cmd": "cghooks update"
+    },
+    "extra": {
+        "hyperf": {
+            "config": "Qbhy\\HyperfAuth\\ConfigProvider"
+        },
+        "hooks": {
+            "pre-commit": [
+                "echo committing as $(git config user.name)",
+                "vendor/bin/php-cs-fixer fix .",
+                "git add .",
+                "composer test"
+            ]
+        }
+    }
+}

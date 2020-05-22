@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo committing as $(git config user.name)
+vendor/bin/php-cs-fixer fix .
+git add .
+composer test
