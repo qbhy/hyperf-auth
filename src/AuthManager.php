@@ -38,8 +38,15 @@ class AuthManager extends DriverManager
     public function driver(?string $name = null): Driver
     {
         $name = $name ?? $this->defaultDriver();
-        $guardConfig = $this->config['guards'][$name] ?? [];
-        return $this->drivers[$name] ?: $this->drivers[$name] = make($guardConfig['driver'], [$guardConfig]);
+
+        if (empty($this->config['guards'][$name])) {
+            throw new GuardException("Does not support this driver: {$name}");
+        }
+        $guardConfig = $this->config['guards'][$name];
+        return $this->drivers[$name] ?: $this->drivers[$name] = make(
+            $guardConfig['driver'],
+            ['config' => $guardConfig]
+        );
     }
 
     public function defaultDriver(): string
