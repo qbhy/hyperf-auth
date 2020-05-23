@@ -72,8 +72,8 @@ namespace App\Controller;
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
-use Hyperf\HttpServer\Annotation\Middleware;
-use Qbhy\HyperfAuth\Annotation\Auth;use Qbhy\HyperfAuth\AuthManager;
+use Qbhy\HyperfAuth\Annotation\Auth;
+use Qbhy\HyperfAuth\AuthManager;
 
 /**
 * @Controller
@@ -122,6 +122,56 @@ class IndexController extends AbstractController
       return 'hello '.$user->name;
   }
 }
+```
+除了上面的 Auth 注解用法，还支持中间件用法
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use Hyperf\HttpServer\Annotation\Middleware;
+use Qbhy\HyperfAuth\AuthMiddleware; 
+use Hyperf\Di\Annotation\Inject;
+use Hyperf\HttpServer\Annotation\GetMapping;
+use Qbhy\HyperfAuth\AuthManager;
+
+/**
+* @Middleware(AuthMiddleware::class)
+* Class IndexController
+*/
+class IndexController extends AbstractController
+{
+  /**
+   * @Inject
+   * @var AuthManager
+   */
+  protected $auth;
+  
+  /**
+   * @GetMapping(path="/user")
+   * @return string
+   */
+  public function user()
+  {
+      $user = $this->auth->guard()->user();
+      return 'hello '.$user->name;
+  }
+}
+```
+由于 hyperf 还不支持中间件传参，所以 `Qbhy\HyperfAuth\AuthMiddleware` 中间件只支持默认guard校验，但是开发者可以继承该中间自行扩展
+```php
+<?php
+
+declare(strict_types=1);
+
+use Qbhy\HyperfAuth\AuthMiddleware; 
+
+class SessionAuthMiddleware extends AuthMiddleware { 
+    protected $guards = ['session']; // 支持多个 guard
+
+ }
 ```
 
 ## 更多用法 - API
