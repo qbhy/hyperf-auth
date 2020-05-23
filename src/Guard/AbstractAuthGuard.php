@@ -42,6 +42,11 @@ abstract class AbstractAuthGuard implements AuthGuard
         $this->userProvider = $userProvider;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function check(): bool
     {
         return $this->user() instanceof Authenticatable;

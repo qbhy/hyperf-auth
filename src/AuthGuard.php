@@ -24,4 +24,6 @@ interface AuthGuard
     public function logout();
 
     public function getProvider(): UserProvider;
+
+    public function getName(): string;
 }

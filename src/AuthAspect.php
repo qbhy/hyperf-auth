@@ -40,9 +40,11 @@ class AuthAspect extends AbstractAspect
 
         $guards = is_array($authAnnotation->value) ? $authAnnotation->value : [$authAnnotation->value];
 
-        foreach ($guards as $guard) {
-            if ($this->auth->guard($guard)->guest()) {
-                throw new UnauthorizedException("Without authorization from {$guard} guard");
+        foreach ($guards as $name) {
+            $guard = $this->auth->guard($name);
+
+            if ($guard->guest()) {
+                throw new UnauthorizedException("Without authorization from {$guard->getName()} guard");
             }
         }
 
