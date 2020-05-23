@@ -160,7 +160,8 @@ class IndexController extends AbstractController
   }
 }
 ```
-由于 hyperf 还不支持中间件传参，所以 `Qbhy\HyperfAuth\AuthMiddleware` 中间件只支持默认guard校验，但是开发者可以继承该中间自行扩展
+由于 hyperf 还不支持中间件传参，所以 `Qbhy\HyperfAuth\AuthMiddleware` 中间件只支持默认guard校验  
+但是开发者可以继承该中间自行扩展。或者直接使用 Auth 注解进行自定义 guard 校验，与中间件的效果是一致的。
 ```php
 <?php
 
