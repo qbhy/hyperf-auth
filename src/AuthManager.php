@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace Qbhy\HyperfAuth;
 
 use Hyperf\Contract\ConfigInterface;
+use Qbhy\HyperfAuth\Exception\GuardException;
+use Qbhy\HyperfAuth\Exception\UserProviderException;
 
 /**
  * Class AuthManager.
