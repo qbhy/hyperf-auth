@@ -16,6 +16,11 @@ $ php bin/hyperf.php vendor:puhlish 96qbhy/hyperf-auth
 > 如不需要自定义 guard、model 和 user provider，则可以不修改
 ```php
 <?php
+
+use Doctrine\Common\Cache\FilesystemCache;
+use Qbhy\SimpleJwt\Encoders\Base64UrlSafeEncoder;
+use Qbhy\SimpleJwt\EncryptAdapters\PasswordHashEncrypter;
+
 return [
     'default' => [
         'guard'=> 'jwt',
@@ -25,7 +30,9 @@ return [
         'jwt' => [
             'driver' => Qbhy\HyperfAuth\Guard\JwtGuard::class,
             'provider' => 'users',
-            'secret' => env('JWT_SECRET', 'qbhy/hyperf-auth'), // JWT_SECRET 务必修改成自己的字符串
+            'secret' => new PasswordHashEncrypter(env('JWT_SECRET', 'qbhy/hyperf-auth')),
+            'encoder' => new Base64UrlSafeEncoder(),
+            'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
         ],
         'session' => [
             'driver' => Qbhy\HyperfAuth\Guard\SessionGuard::class,
