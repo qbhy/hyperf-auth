@@ -8,6 +8,19 @@ $ composer require 96qbhy/hyperf-auth
 ```
 
 ## 配置 - configuration
+使用 `Qbhy\HyperfAuth\AuthExceptionHandler`
+```php
+<?php
+// config/autoload/exceptions.php
+return [
+    'handler' => [
+        'http' => [
+            \Qbhy\HyperfAuth\AuthExceptionHandler::class,
+        ],    
+    ],
+];
+```
+
 发布配置 vendor:publish
 ```bash
 $ php bin/hyperf.php vendor:puhlish 96qbhy/hyperf-auth
