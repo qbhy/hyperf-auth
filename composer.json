@@ -5,7 +5,9 @@
     "license": "MIT",
     "keywords": [
         "php",
-        "hyperf"
+        "hyperf",
+        "hyperf-auth",
+        "jwt-auth"
     ],
     "autoload": {
         "psr-4": {
