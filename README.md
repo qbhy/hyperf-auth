@@ -8,7 +8,7 @@ $ composer require 96qbhy/hyperf-auth
 ```
 
 ## 配置 - configuration
-使用 `Qbhy\HyperfAuth\AuthExceptionHandler`
+使用 `Qbhy\HyperfAuth\AuthExceptionHandler` ，此步骤可选，开发者可以自行捕捉 `AuthException`  和 `JWTException` 进行处理
 ```php
 <?php
 // config/autoload/exceptions.php
