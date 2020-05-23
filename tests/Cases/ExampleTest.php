@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace HyperfTest\Cases;
 
+use Doctrine\Common\Cache\FilesystemCache;
 use HyperfTest\DemoUser;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\AuthGuard;
@@ -35,8 +36,11 @@ class ExampleTest extends AbstractTestCase
 
     public function testJwtGuard()
     {
+        $auth = $this->auth();
         /** @var JwtGuard $guard */
-        $guard = $this->auth()->guard();
+        $guard = $auth->guard();
+        $auth->login($this->user());
+
         // 测试默认 guard
         $this->assertTrue($guard instanceof AuthGuard);
         $this->assertTrue($guard instanceof JwtGuard);
@@ -56,7 +60,6 @@ class ExampleTest extends AbstractTestCase
     {
         /** @var SessionGuard $guard */
         $guard = $this->auth()->guard('session');
-        // 测试默认 guard
         $this->assertTrue($guard instanceof SessionGuard);
         $this->assertTrue($guard->getProvider() instanceof EloquentProvider);
         $user = $this->user();
@@ -79,6 +82,8 @@ class ExampleTest extends AbstractTestCase
                         'driver' => JwtGuard::class, // guard 类名
                         'secret' => 'test.secret',
                         'provider' => 'test-provider', // 不设置的话用上面的 default.provider 或者用 'default'
+                        'encoder' => null,
+                        'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
                     ],
                     'session' => [
                         'driver' => SessionGuard::class, // guard 类名

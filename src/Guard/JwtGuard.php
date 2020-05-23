@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace Qbhy\HyperfAuth\Guard;
 
+use Doctrine\Common\Cache\Cache;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
@@ -32,10 +33,17 @@ class JwtGuard extends AbstractAuthGuard
     /**
      * JwtGuardAbstract constructor.
      */
-    public function __construct(array $config, string $name, UserProvider $userProvider, RequestInterface $request)
-    {
+    public function __construct(
+        array $config,
+        string $name,
+        UserProvider $userProvider,
+        RequestInterface $request
+    ) {
         parent::__construct($config, $name, $userProvider);
-        $this->jwtManager = new JWTManager($config['secret'] ?? 'secret');
+        $secret = $config['secret'] ?? 'secret';
+        $encoder = $config['encoder'] ?? null;
+        $cache = $config['cache'] ?? null;
+        $this->jwtManager = new JWTManager($secret, $encoder, $cache instanceof Cache ? $cache : null);
         $this->request = $request;
     }
 
@@ -61,6 +69,7 @@ class JwtGuard extends AbstractAuthGuard
     public function user(?string $token = null): ?Authenticatable
     {
         $token = $token ?? $this->parseToken();
+
         if ($token) {
             $jwt = $this->jwtManager->parse($token);
             $uid = $jwt->getPayload()['uid'] ?? null;
@@ -70,8 +79,14 @@ class JwtGuard extends AbstractAuthGuard
         return null;
     }
 
-    public function logout()
+    public function logout($token = null)
     {
+        if ($token = $token ?? $this->parseToken()) {
+            $jti = $this->jwtManager->parse($token)->getPayload()['jti'] ?? $token;
+            $this->jwtManager->addBlacklist($jti);
+            return true;
+        }
+        return false;
     }
 
     public function getJwtManager(): JWTManager

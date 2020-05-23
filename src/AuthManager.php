@@ -33,12 +33,12 @@ class AuthManager
     /**
      * @var array
      */
-    protected $guards;
+    protected $guards = [];
 
     /**
      * @var array
      */
-    protected $providers;
+    protected $providers = [];
 
     /**
      * @var array
@@ -72,14 +72,13 @@ class AuthManager
         if (empty($this->config['guards'][$name])) {
             throw new GuardException("Does not support this driver: {$name}");
         }
+
         $config = $this->config['guards'][$name];
+        $userProvider = $this->provider($config['provider'] ?? $this->defaultDriver);
+
         return $this->guards[$name] ?? $this->guards[$name] = make(
             $config['driver'],
-            [
-                'config' => $config,
-                'name' => $name,
-                'userProvider' => $this->provider($config['provider'] ?? $this->defaultDriver),
-            ]
+            compact('name', 'config', 'userProvider')
         );
     }
 
@@ -96,7 +95,7 @@ class AuthManager
 
         $config = $this->config['providers'][$name];
 
-        return $this->providers[$name] ?: $this->providers[$name] = make(
+        return $this->providers[$name] ?? $this->providers[$name] = make(
             $config['driver'],
             [
                 'config' => $config,
@@ -113,5 +112,10 @@ class AuthManager
     public function defaultProvider(): string
     {
         return $this->config['default']['provider'] ?? $this->defaultDriver;
+    }
+
+    public function getGuards(): array
+    {
+        return $this->guards;
     }
 }

@@ -21,6 +21,11 @@ define('BASE_PATH', $dir = dirname(__DIR__, 1));
 $container = new Container((new DefinitionSourceFactory(true))());
 ApplicationContext::setContainer($container);
 $container->define(RequestInterface::class, Request::class);
+
+$container->define(\Psr\SimpleCache\CacheInterface::class, function () use ($container) {
+    return new \Hyperf\Cache\Driver\FileSystemDriver($container, []);
+});
+
 $container->define(\Hyperf\Contract\SessionInterface::class, function () {
     return new Hyperf\Session\Session('testing', new \Hyperf\Session\Handler\FileHandler(
         new \Hyperf\Utils\Filesystem\Filesystem(),

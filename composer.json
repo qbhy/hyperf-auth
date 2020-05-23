@@ -21,6 +21,7 @@
         "php": ">=7.2",
         "ext-swoole": ">=4.4",
         "96qbhy/simple-jwt": "^1.0",
+        "hyperf/cache": "^1.1",
         "hyperf/di": "1.1.*"
     },
     "require-dev": {

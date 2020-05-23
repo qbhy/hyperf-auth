@@ -47,7 +47,12 @@ class SessionGuard extends AbstractAuthGuard
 
     public function logout()
     {
-        $this->session->remove($this->sessionKey());
+        if ($this->session->has($this->sessionKey())) {
+            $this->session->remove($this->sessionKey());
+            return true;
+        }
+
+        return false;
     }
 
     protected function sessionKey(): string
