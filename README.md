@@ -119,6 +119,13 @@ $auth->check(); // 检查是否登录
 $auth->guest(); // 是否游客/是否未登录
 $auth->user(); // 若登录返回当前登录用户，否则返回null
 
+/** @var \Qbhy\HyperfAuth\Guard\JwtGuard $jwtGuard */
+$jwtGuard = $auth->guard('jwt');
+$jwtGuard->user('your token or null'); // jwt 驱动支持手动传入 token，如不传或者传null则从 request 中解析
+$jwtGuard->check('your token or null');
+$jwtGuard->guest('your token or null');
+
+
 $auth->guard()->login($user); // guard 方法不传参数或者传null都将使用默认值
 
 // 使用 session 驱动需要安装 hyperf/session 并启用 session
