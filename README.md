@@ -113,9 +113,7 @@ class IndexController extends AbstractController
 ```php
 <?php
 
-use Qbhy\HyperfAuth\AuthManager;
-
-/** @var AuthManager $auth */
+$auth = auth(); // 控制器内也可以通过 @Inject 注入
 
 $user = new \HyperfTest\DemoUser(1);
 
