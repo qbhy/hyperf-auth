@@ -16,6 +16,7 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\UserProvider;
+use Qbhy\SimpleJwt\Exceptions\JWTException;
 use Qbhy\SimpleJwt\JWTManager;
 
 class JwtGuard extends AbstractAuthGuard
@@ -68,7 +69,7 @@ class JwtGuard extends AbstractAuthGuard
 
     public function guest($token = null): bool
     {
-        return ! $this->user($token) instanceof Authenticatable;
+        return ! $this->check($token);
     }
 
     public function login(Authenticatable $user)
@@ -78,12 +79,35 @@ class JwtGuard extends AbstractAuthGuard
 
     public function user(?string $token = null): ?Authenticatable
     {
+        try {
+            $token = $token ?? $this->parseToken();
+
+            if ($token) {
+                $jwt = $this->jwtManager->parse($token);
+                $uid = $jwt->getPayload()['uid'] ?? null;
+                return $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
+            }
+            return null;
+        } catch (JWTException $exception) {
+            return null;
+        }
+    }
+
+    /**
+     * 刷新 token，旧 token 会失效.
+     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
+     * @throws \Qbhy\SimpleJwt\Exceptions\JWTException
+     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
+     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
+     */
+    public function refresh(?string $token = null): ?string
+    {
         $token = $token ?? $this->parseToken();
 
         if ($token) {
             $jwt = $this->jwtManager->parse($token);
-            $uid = $jwt->getPayload()['uid'] ?? null;
-            return $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
+            $this->logout($token);
+            return $this->jwtManager->refresh($jwt)->token();
         }
 
         return null;

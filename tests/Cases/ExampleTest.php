@@ -57,6 +57,12 @@ class ExampleTest extends AbstractTestCase
         $jwtManager = $guard->getJwtManager();
         $token = $guard->login($this->user());
 
+        $this->assertTrue(is_string($newToken = $guard->refresh($token))); // 测试刷新 token
+        $this->assertTrue($guard->guest($token)); // 试试旧 token 是否失效
+        $this->assertTrue($guard->check($newToken)); // 试试新 token 是否生效
+
+        $token = $newToken;
+
         $this->assertTrue(is_string($token));
         $jwt = $jwtManager->parse($token);
         $this->assertTrue($jwt instanceof JWT);
