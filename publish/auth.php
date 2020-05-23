@@ -17,6 +17,10 @@ return [
             'provider' => 'users',
             'secret' => env('JWT_SECRET', 'qbhy/hyperf-auth'),
         ],
+        'session' => [
+            'driver' => Qbhy\HyperfAuth\Guard\SessionGuard::class,
+            'provider' => 'users',
+        ],
     ],
     'providers' => [
         'users' => [
