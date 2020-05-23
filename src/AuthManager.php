@@ -17,8 +17,10 @@ use Hyperf\Contract\ConfigInterface;
  * Class AuthManager.
  * @method login(Authenticatable $user)
  * @method null|Authenticatable user()
- * @method bool check(Authenticatable $user)
+ * @method bool check()
  * @method logout()
+ * @method bool guest()
+ * @method getProvider()
  * @mixin AuthGuard
  */
 class AuthManager
@@ -48,6 +50,17 @@ class AuthManager
         $this->config = $config->get('auth');
     }
 
+    public function __call($name, $arguments)
+    {
+        $guard = $this->guard();
+
+        if (method_exists($guard, $name)) {
+            return call_user_func_array([$guard, $name], $arguments);
+        }
+
+        throw new GuardException('Method not defined. method:' . $name);
+    }
+
     /**
      * @throws GuardException
      * @throws UserProviderException
@@ -60,7 +73,7 @@ class AuthManager
             throw new GuardException("Does not support this driver: {$name}");
         }
         $config = $this->config['guards'][$name];
-        return $this->guards[$name] ?: $this->guards[$name] = make(
+        return $this->guards[$name] ?? $this->guards[$name] = make(
             $config['driver'],
             [
                 'config' => $config,

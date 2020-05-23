@@ -10,7 +10,10 @@ declare(strict_types=1);
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
 return [
-    'default' => 'jwt',
+    'default' => [
+        'guard' => 'jwt',
+        'provider' => 'users',
+    ],
     'guards' => [
         'jwt' => [
             'driver' => Qbhy\HyperfAuth\Guard\JwtGuard::class,
