@@ -49,7 +49,7 @@ return [
 ```
 
 ## 使用 - usage
-> 以下是伪代码，仅供参考
+> 以下是伪代码，仅供参考。Auth 注解可以用于类或者方法。
 ```php
 <?php
 declare(strict_types=1);
@@ -60,11 +60,10 @@ use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Annotation\Controller;
 use Hyperf\HttpServer\Annotation\GetMapping;
 use Hyperf\HttpServer\Annotation\Middleware;
-use Qbhy\HyperfAuth\AuthManager;
+use Qbhy\HyperfAuth\Annotation\Auth;use Qbhy\HyperfAuth\AuthManager;
 
 /**
 * @Controller
-* @Middleware(ExampleMiddleware::class)
 * Class IndexController
 */
 class IndexController extends AbstractController
@@ -82,13 +81,14 @@ class IndexController extends AbstractController
   public function login()
   {
       /** @var User $user */
-      $user = User::query()->firstOrCreate(['name' => 'text', 'avatar' => 'avatar']);
+      $user = User::query()->firstOrCreate(['name' => 'test', 'avatar' => 'avatar']);
       return [
           'status' => $this->auth->guard('session')->login($user),
       ];
   }
 
   /**
+   * @Auth("session")
    * @GetMapping(path="/logout")
    */
   public function logout()
@@ -98,13 +98,15 @@ class IndexController extends AbstractController
   }
 
   /**
+   * 使用 Auth 注解可以保证该方法必须通过某个 guard 的授权，支持同时传多个 guard，不传参数使用默认 guard
+   * @Auth("session")
    * @GetMapping(path="/user")
    * @return string
    */
   public function user()
   {
       $user = $this->auth->guard('session')->user();
-      return $user ? $user->name : 'unauthorized';
+      return 'hello '.$user->name;
   }
 }
 ```
