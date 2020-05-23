@@ -194,6 +194,7 @@ $jwtGuard = $auth->guard('jwt');
 $jwtGuard->user('your token or null'); // jwt 驱动支持手动传入 token，如不传或者传null则从 request 中解析
 $jwtGuard->check('your token or null');
 $jwtGuard->guest('your token or null');
+$jwtGuard->refresh('your token or null'); // 该方法返回新的 token 或者 null
 
 
 $auth->guard()->login($user); // guard 方法不传参数或者传null都将使用默认值
