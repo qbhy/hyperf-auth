@@ -35,8 +35,10 @@ class AuthAspect extends AbstractAspect
 
     public function process(ProceedingJoinPoint $proceedingJoinPoint)
     {
+        $annotation = $proceedingJoinPoint->getAnnotationMetadata();
+
         /** @var Auth $authAnnotation */
-        $authAnnotation = $proceedingJoinPoint->getAnnotationMetadata()->class[Auth::class];
+        $authAnnotation = $annotation->class[Auth::class] ?? $annotation->method[Auth::class];
 
         $guards = is_array($authAnnotation->value) ? $authAnnotation->value : [$authAnnotation->value];
 
