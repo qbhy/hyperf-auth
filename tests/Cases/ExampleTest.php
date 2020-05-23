@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace HyperfTest\Cases;
 
-use Doctrine\Common\Cache\FilesystemCache;
+use Hyperf\Utils\ApplicationContext;
 use HyperfTest\DemoUser;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\AuthGuard;
@@ -32,6 +32,11 @@ class ExampleTest extends AbstractTestCase
         $this->assertTrue(true);
 
         $this->assertTrue(extension_loaded('swoole'));
+    }
+
+    public function testAuthFunc()
+    {
+        $this->assertTrue(auth() instanceof AuthManager);
     }
 
     public function testJwtGuard()
@@ -71,43 +76,9 @@ class ExampleTest extends AbstractTestCase
         $this->assertTrue($guard->user() instanceof Authenticatable);
     }
 
-    protected function config()
-    {
-        return new \Hyperf\Config\Config([
-            'auth' => [
-                'default' => [
-                    'guard' => 'jwt',
-                    'provider' => 'test-provider',
-                ],
-
-                'guards' => [
-                    'jwt' => [
-                        'driver' => JwtGuard::class, // guard 类名
-                        'secret' => 'test.secret',
-                        'provider' => 'test-provider', // 不设置的话用上面的 default.provider 或者用 'default'
-                        'encoder' => null,
-                        'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
-                    ],
-                    'session' => [
-                        'driver' => SessionGuard::class, // guard 类名
-                        'provider' => 'test-provider', // 不设置的话用上面的 default.provider 或者用 'default'
-                    ],
-                ],
-
-                'providers' => [
-                    'test-provider' => [
-                        'driver' => EloquentProvider::class, // user provider name
-                        'model' => DemoUser::class,
-                        // ... others config
-                    ],
-                ],
-            ],
-        ]);
-    }
-
     protected function auth()
     {
-        return new AuthManager($this->config());
+        return ApplicationContext::getContainer()->get(AuthManager::class);
     }
 
     protected function user($id = 1)

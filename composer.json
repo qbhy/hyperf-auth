@@ -10,7 +10,10 @@
     "autoload": {
         "psr-4": {
             "Qbhy\\HyperfAuth\\": "src/"
-        }
+        },
+        "files": [
+            "src/helper.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
