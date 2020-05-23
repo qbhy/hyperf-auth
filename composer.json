@@ -25,7 +25,8 @@
         "ext-swoole": ">=4.4",
         "96qbhy/simple-jwt": "^1.0",
         "hyperf/cache": "^1.1",
-        "hyperf/di": "1.1.*"
+        "hyperf/di": "1.1.*",
+        "ext-json": "*"
     },
     "require-dev": {
         "brainmaestro/composer-git-hooks": "^2.8",
