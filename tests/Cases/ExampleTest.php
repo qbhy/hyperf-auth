@@ -36,10 +36,13 @@ class ExampleTest extends AbstractTestCase
 
     public function testJwtGuard()
     {
+        /** @var AuthManager|JwtGuard $auth */
         $auth = $this->auth();
         /** @var JwtGuard $guard */
         $guard = $auth->guard();
-        $auth->login($this->user());
+        $token = $auth->login($this->user());
+        $this->assertTrue($auth->check($token));
+        $this->assertTrue(! $auth->guest($token));
 
         // 测试默认 guard
         $this->assertTrue($guard instanceof AuthGuard);

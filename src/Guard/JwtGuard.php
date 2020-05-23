@@ -61,6 +61,16 @@ class JwtGuard extends AbstractAuthGuard
         return null;
     }
 
+    public function check($token = null): bool
+    {
+        return $this->user($token) instanceof Authenticatable;
+    }
+
+    public function guest($token = null): bool
+    {
+        return ! $this->user($token) instanceof Authenticatable;
+    }
+
     public function login(Authenticatable $user)
     {
         return $this->jwtManager->make(['uid' => $user->getKey()])->token();

@@ -20,7 +20,9 @@ define('BASE_PATH', $dir = dirname(__DIR__, 1));
 
 $container = new Container((new DefinitionSourceFactory(true))());
 ApplicationContext::setContainer($container);
-$container->define(RequestInterface::class, Request::class);
+$container->define(RequestInterface::class, function () {
+    return new Request();
+});
 
 $container->define(\Psr\SimpleCache\CacheInterface::class, function () use ($container) {
     return new \Hyperf\Cache\Driver\FileSystemDriver($container, []);
