@@ -43,7 +43,11 @@ return [
         'jwt' => [
             'driver' => Qbhy\HyperfAuth\Guard\JwtGuard::class,
             'provider' => 'users',
-            'secret' => new PasswordHashEncrypter(env('JWT_SECRET', 'qbhy/hyperf-auth')),
+
+            // 以下是 simple-jwt 所需的参数，具体配置文档可以看 config/autoload/auth.php
+            'secret' =>env('JWT_SECRET', 'qbhy/hyperf-auth'),
+            'ttl' => 60 * 60, // 单位秒
+            'default' => PasswordHashEncrypter::class,
             'encoder' => new Base64UrlSafeEncoder(),
             'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
         ],

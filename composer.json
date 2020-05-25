@@ -25,7 +25,7 @@
     "require": {
         "php": ">=7.2",
         "ext-swoole": ">=4.4",
-        "96qbhy/simple-jwt": "^1.0",
+        "96qbhy/simple-jwt": "^v1.2",
         "hyperf/cache": "^1.1",
         "hyperf/di": "1.1.*",
         "ext-json": "*"

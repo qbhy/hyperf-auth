@@ -11,7 +11,6 @@ declare(strict_types=1);
  */
 namespace Qbhy\HyperfAuth\Guard;
 
-use Doctrine\Common\Cache\Cache;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
@@ -41,10 +40,7 @@ class JwtGuard extends AbstractAuthGuard
         RequestInterface $request
     ) {
         parent::__construct($config, $name, $userProvider);
-        $secret = $config['secret'] ?? 'secret';
-        $encoder = $config['encoder'] ?? null;
-        $cache = $config['cache'] ?? null;
-        $this->jwtManager = new JWTManager($secret, $encoder, $cache instanceof Cache ? $cache : null);
+        $this->jwtManager = new JWTManager($config);
         $this->request = $request;
     }
 
