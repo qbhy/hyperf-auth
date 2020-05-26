@@ -23,7 +23,7 @@ return [
 
 发布配置 vendor:publish
 ```bash
-$ php bin/hyperf.php vendor:puhlish 96qbhy/hyperf-auth
+$ php bin/hyperf.php vendor:publish 96qbhy/hyperf-auth
 ```
 修改 `config/autoload/auth.php`
 > 如不需要自定义 guard、model 和 user provider，则可以不修改
