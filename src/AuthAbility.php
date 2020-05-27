@@ -19,12 +19,12 @@ use Hyperf\Database\Model\Model;
  */
 trait AuthAbility
 {
-    public function getKey()
+    public function getId()
     {
-        return $this->id;
+        return $this->getKey();
     }
 
-    public static function retrieveByKey($key): ?Authenticatable
+    public static function retrieveById($key): ?Authenticatable
     {
         return self::query()->find($key);
     }

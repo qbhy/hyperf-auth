@@ -70,7 +70,7 @@ class JwtGuard extends AbstractAuthGuard
 
     public function login(Authenticatable $user)
     {
-        return $this->jwtManager->make(['uid' => $user->getKey()])->token();
+        return $this->jwtManager->make(['uid' => $user->getId()])->token();
     }
 
     public function user(?string $token = null): ?Authenticatable

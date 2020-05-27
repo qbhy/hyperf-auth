@@ -17,11 +17,11 @@ class EloquentProvider extends AbstractUserProvider
 {
     public function retrieveByCredentials($credentials)
     {
-        return call_user_func_array([$this->config['model'], 'retrieveByKey'], [$credentials]);
+        return call_user_func_array([$this->config['model'], 'retrieveById'], [$credentials]);
     }
 
     public function validateCredentials(Authenticatable $user, $credentials): bool
     {
-        return $user->getKey() === $credentials;
+        return $user->getId() === $credentials;
     }
 }

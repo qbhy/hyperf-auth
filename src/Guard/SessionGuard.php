@@ -33,7 +33,7 @@ class SessionGuard extends AbstractAuthGuard
 
     public function login(Authenticatable $user)
     {
-        $this->session->put($this->sessionKey(), $user->getKey());
+        $this->session->put($this->sessionKey(), $user->getId());
         return true;
     }
 

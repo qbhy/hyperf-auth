@@ -26,12 +26,12 @@ class DemoUser implements Authenticatable
         $this->id = $id;
     }
 
-    public function getKey()
+    public function getId()
     {
         return $this->id;
     }
 
-    public static function retrieveByKey($key): ?Authenticatable
+    public static function retrieveById($key): ?Authenticatable
     {
         return new DemoUser($key);
     }

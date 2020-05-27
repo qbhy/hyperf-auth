@@ -13,7 +13,7 @@ namespace Qbhy\HyperfAuth;
 
 interface Authenticatable
 {
-    public function getKey();
+    public function getId();
 
-    public static function retrieveByKey($key): ?Authenticatable;
+    public static function retrieveById($key): ?Authenticatable;
 }
