@@ -77,6 +77,12 @@ return [
              * 缓存类
              */
             'cache' => new \Doctrine\Common\Cache\FilesystemCache(sys_get_temp_dir()),
+
+            /*
+             * 可选配置
+             * 缓存前缀
+             */
+            'prefix' => env('SIMPLE_JWT_PREFIX', 'default'),
         ],
         'session' => [
             'driver' => Qbhy\HyperfAuth\Guard\SessionGuard::class,
