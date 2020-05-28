@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * This file is part of qbhy/hyperf-auth.
  *
@@ -10,7 +12,6 @@
 use Qbhy\SimpleJwt\Encoders;
 use Qbhy\SimpleJwt\EncryptAdapters as Encrypter;
 
-declare(strict_types=1);
 /*
  * This file is part of qbhy/hyperf-auth.
  *

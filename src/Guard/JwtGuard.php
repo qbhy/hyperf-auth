@@ -14,6 +14,7 @@ namespace Qbhy\HyperfAuth\Guard;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
+use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\HyperfAuth\UserProvider;
 use Qbhy\SimpleJwt\Exceptions\JWTException;
 use Qbhy\SimpleJwt\JWTManager;
@@ -58,14 +59,28 @@ class JwtGuard extends AbstractAuthGuard
         return null;
     }
 
+    /**
+     * @param null $token
+     *
+     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
+     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
+     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
+     */
     public function check($token = null): bool
     {
-        return $this->user($token) instanceof Authenticatable;
+        $token = $token ?? $this->parseToken();
+        if (empty($token)) {
+            throw new UnauthorizedException('A token is required');
+        }
+
+        $uid = $this->jwtManager->parse($token)->getPayload()['uid'] ?? 0;
+
+        return $this->userProvider->retrieveByCredentials($uid) instanceof Authenticatable;
     }
 
     public function guest($token = null): bool
     {
-        return ! $this->check($token);
+        return $this->user($token) === null;
     }
 
     public function login(Authenticatable $user)
