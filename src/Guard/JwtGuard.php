@@ -70,7 +70,7 @@ class JwtGuard extends AbstractAuthGuard
     {
         $token = $token ?? $this->parseToken();
         if (empty($token)) {
-            throw new UnauthorizedException('A token is required');
+            throw new UnauthorizedException('The token is required');
         }
 
         $uid = $this->jwtManager->parse($token)->getPayload()['uid'] ?? 0;
