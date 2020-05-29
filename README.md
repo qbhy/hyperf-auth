@@ -2,6 +2,14 @@
 hyperf 的 auth 组件，目前支持 jwt、session 驱动。用户可以自行扩展。  
 本组件参考了 laravel 的 auth 组件设计，使用体验大体和 laravel 的 auth 差不多。
 
+[![Latest Stable Version](https://poser.pugx.org/qbhy/hyperf-auth/v/stable)](https://packagist.org/packages/qbhy/hyperf-auth)
+[![Total Downloads](https://poser.pugx.org/qbhy/hyperf-auth/downloads)](https://packagist.org/packages/qbhy/hyperf-auth)
+[![Latest Unstable Version](https://poser.pugx.org/qbhy/hyperf-auth/v/unstable)](https://packagist.org/packages/qbhy/hyperf-auth)
+[![License](https://poser.pugx.org/qbhy/hyperf-auth/license)](https://packagist.org/packages/qbhy/hyperf-auth)
+[![Monthly Downloads](https://poser.pugx.org/qbhy/hyperf-auth/d/monthly)](https://packagist.org/packages/qbhy/hyperf-auth)
+[![Daily Downloads](https://poser.pugx.org/qbhy/hyperf-auth/d/daily)](https://packagist.org/packages/qbhy/hyperf-auth)
+
+
 ## 安装 - install
 ```bash
 $ composer require 96qbhy/hyperf-auth
@@ -201,13 +209,12 @@ $jwtGuard->check('your token or null');
 $jwtGuard->guest('your token or null');
 $jwtGuard->refresh('your token or null'); // 该方法返回新的 token 或者 null
 
-
 $auth->guard()->login($user); // guard 方法不传参数或者传null都将使用默认值
 
 // 使用 session 驱动需要安装 hyperf/session 并启用 session
 $auth->guard('session')->login($user); // guard 方法不传参数或者传null都会获取默认值
-// 
 ```
+> 注意事项：使用 jwt 驱动且令牌异常的情况下调用 user 方法，会抛出相应的异常，需要自行捕捉处理，不想抛异常，可以调用 check 进行判断。
 
 ## 扩展 - extension
 由于本组件参考了 laravel auth 的设计，所以 guard 和 user provider 的扩展也和 laravel 类似。只需要实现对应接口即可。

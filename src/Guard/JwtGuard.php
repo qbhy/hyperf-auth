@@ -59,30 +59,6 @@ class JwtGuard extends AbstractAuthGuard
         return null;
     }
 
-    /**
-     * @param null $token
-     *
-     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
-     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
-     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
-     */
-    public function check($token = null): bool
-    {
-        $token = $token ?? $this->parseToken();
-        if (empty($token)) {
-            throw new UnauthorizedException('The token is required');
-        }
-
-        $uid = $this->jwtManager->parse($token)->getPayload()['uid'] ?? 0;
-
-        return $this->userProvider->retrieveByCredentials($uid) instanceof Authenticatable;
-    }
-
-    public function guest($token = null): bool
-    {
-        return $this->user($token) === null;
-    }
-
     public function login(Authenticatable $user)
     {
         return $this->jwtManager->make(['uid' => $user->getId()])->token();
@@ -90,18 +66,31 @@ class JwtGuard extends AbstractAuthGuard
 
     public function user(?string $token = null): ?Authenticatable
     {
-        try {
-            $token = $token ?? $this->parseToken();
+        $token = $token ?? $this->parseToken();
 
-            if ($token) {
-                $jwt = $this->jwtManager->parse($token);
-                $uid = $jwt->getPayload()['uid'] ?? null;
-                return $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
-            }
-            return null;
-        } catch (JWTException $exception) {
-            return null;
+        if ($token) {
+            $jwt = $this->jwtManager->parse($token);
+            $uid = $jwt->getPayload()['uid'] ?? null;
+            return $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
         }
+
+        throw new UnauthorizedException('The token is required.');
+    }
+
+    public function check(?string $token = null): bool
+    {
+        try {
+            return $this->user($token) instanceof Authenticatable;
+        } catch (UnauthorizedException $exception) {
+            return false;
+        } catch (JWTException $exception) {
+            return false;
+        }
+    }
+
+    public function guest(?string $token = null): bool
+    {
+        return ! $this->check($token);
     }
 
     /**
