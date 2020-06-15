@@ -47,7 +47,7 @@ return [
         'guard'=> 'jwt',
         'provider'=> 'users',
     ] ,
-    'guards' => [ // 开发者可以在这里添加自己的 guard ，guard Qbhy\HyperfAuth\AuahGuard 接口
+    'guards' => [ // 开发者可以在这里添加自己的 guard ，guard Qbhy\HyperfAuth\AuthGuard 接口
         'jwt' => [
             'driver' => Qbhy\HyperfAuth\Guard\JwtGuard::class,
             'provider' => 'users',
