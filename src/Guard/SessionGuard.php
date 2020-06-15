@@ -12,7 +12,9 @@ declare(strict_types=1);
 namespace Qbhy\HyperfAuth\Guard;
 
 use Hyperf\Contract\SessionInterface;
+use Hyperf\Utils\Context;
 use Qbhy\HyperfAuth\Authenticatable;
+use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\HyperfAuth\UserProvider;
 
 class SessionGuard extends AbstractAuthGuard
@@ -37,17 +39,38 @@ class SessionGuard extends AbstractAuthGuard
         return true;
     }
 
+    public function resultKey()
+    {
+        return $this->name . 'auth.result:' . $this->session->getId();
+    }
+
     public function user(): ?Authenticatable
     {
-        if ($credentials = $this->session->get($this->sessionKey())) {
-            return $this->userProvider->retrieveByCredentials($credentials);
+        if (Context::has($key = $this->resultKey())) {
+            $result = Context::get($key);
+            if ($result instanceof \Throwable) {
+                throw $result;
+            }
+            return $result ?: null;
         }
-        return null;
+
+        try {
+            if ($credentials = $this->session->get($this->sessionKey())) {
+                $user = $this->userProvider->retrieveByCredentials($credentials);
+                Context::set($key, $user ?? 0);
+                return $user;
+            }
+            throw new UnauthorizedException('Unauthorized.');
+        } catch (\Throwable $exception) {
+            Context::set($key, $exception);
+            throw $exception;
+        }
     }
 
     public function logout()
     {
         if ($this->session->has($this->sessionKey())) {
+            Context::destroy($this->resultKey());
             $this->session->remove($this->sessionKey());
             return true;
         }

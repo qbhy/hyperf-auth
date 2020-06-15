@@ -65,10 +65,15 @@ class JwtGuard extends AbstractAuthGuard
         return $this->jwtManager->make(['uid' => $user->getId()])->token();
     }
 
+    public function resultKey($token)
+    {
+        return $this->name . '.auth.result.' . $token;
+    }
+
     public function user(?string $token = null): ?Authenticatable
     {
         $token = $token ?? $this->parseToken();
-        if (Context::has($key = 'auth.result.' . $token)) {
+        if (Context::has($key = $this->resultKey($token))) {
             $result = Context::get($key);
             if ($result instanceof \Throwable) {
                 throw $result;
@@ -132,6 +137,7 @@ class JwtGuard extends AbstractAuthGuard
     public function logout($token = null)
     {
         if ($token = $token ?? $this->parseToken()) {
+            Context::destroy($this->resultKey($token));
             $this->jwtManager->addBlacklist(
                 $this->jwtManager->parse($token)
             );
