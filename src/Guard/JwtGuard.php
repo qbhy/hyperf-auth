@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Qbhy\HyperfAuth\Guard;
 
 use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\Utils\Context;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
@@ -67,14 +68,29 @@ class JwtGuard extends AbstractAuthGuard
     public function user(?string $token = null): ?Authenticatable
     {
         $token = $token ?? $this->parseToken();
-
-        if ($token) {
-            $jwt = $this->jwtManager->parse($token);
-            $uid = $jwt->getPayload()['uid'] ?? null;
-            return $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
+        if (Context::has($key = 'auth.result.' . $token)) {
+            $result = Context::get($key);
+            if ($result instanceof \Throwable) {
+                throw $result;
+            }
+            return $result ?: null;
         }
 
-        throw new UnauthorizedException('The token is required.');
+        try {
+            if ($token) {
+                $jwt = $this->jwtManager->parse($token);
+                $uid = $jwt->getPayload()['uid'] ?? null;
+                $user = $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
+                Context::set($key, $user ?: 0);
+
+                return $user;
+            }
+
+            throw new UnauthorizedException('The token is required.');
+        } catch (\Throwable $exception) {
+            Context::set($key, $exception);
+            throw $exception;
+        }
     }
 
     public function check(?string $token = null): bool
