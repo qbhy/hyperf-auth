@@ -28,7 +28,9 @@
         "96qbhy/simple-jwt": "^v1.2",
         "hyperf/cache": "^1.1",
         "hyperf/di": "1.1.*",
-        "ext-json": "*",
+        "ext-json": "*"
+    },
+    "suggest": {
         "ext-redis": "*"
     },
     "require-dev": {
