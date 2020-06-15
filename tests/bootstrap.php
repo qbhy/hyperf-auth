@@ -23,8 +23,9 @@ use Qbhy\HyperfAuth\Provider\EloquentProvider;
 require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
 define('BASE_PATH', $dir = dirname(__DIR__, 1));
 
-$container = new Container((new DefinitionSourceFactory(true))());
+$container = new Container((new DefinitionSourceFactory(false))());
 ApplicationContext::setContainer($container);
+
 $container->define(RequestInterface::class, function () {
     return new Request();
 });

@@ -57,7 +57,10 @@ return [
             'ttl' => 60 * 60, // 单位秒
             'default' => PasswordHashEncrypter::class,
             'encoder' => new Base64UrlSafeEncoder(),
-            'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
+//            'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
+            'cache' => function() {
+                return make(Qbhy\HyperfAuth\HyperfRedisCache::class);
+            }, 
         ],
         'session' => [
             'driver' => Qbhy\HyperfAuth\Guard\SessionGuard::class,

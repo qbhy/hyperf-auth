@@ -37,6 +37,7 @@
         "hyperf/config": "^1.1",
         "hyperf/database": "^1.1",
         "hyperf/framework": "^1.1",
+        "hyperf/redis": "^1.1",
         "hyperf/session": "^1.1",
         "hyperf/testing": "1.1.*",
         "phpstan/phpstan": "^0.10.5",
