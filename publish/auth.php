@@ -79,10 +79,8 @@ return [
              */
             'cache' => new \Doctrine\Common\Cache\FilesystemCache(sys_get_temp_dir()),
             // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
-            //            'cache'=> function () {
-            //                $cache = new \Doctrine\Common\Cache\RedisCache();
-            //                $cache->setRedis(make(\Redis::class));
-            //                return $cache;
+            //            'cache' => function () {
+            //                return make(\Qbhy\HyperfAuth\HyperfRedisCache::class);
             //            },
 
             /*
