@@ -223,6 +223,7 @@ $auth->guard('session')->login($user); // guard 方法不传参数或者传null�
 由于本组件参考了 laravel auth 的设计，所以 guard 和 user provider 的扩展也和 laravel 类似。只需要实现对应接口即可。
 * guard ===> Qbhy\HyperfAuth\AuthGuard  
 * user provider ===> Qbhy\HyperfAuth\UserProvider  
+> 扩展教程请移步 [hyperf教程之hyperf-auth高级用法](https://mp.weixin.qq.com/s/jlbbN6zhWEVteimpi0mLjg)
 
 https://github.com/qbhy/hyperf-auth  
 qbhy0715@qq.com  
