@@ -14,6 +14,7 @@ hyperf 的 auth 组件，目前支持 jwt、session 驱动。用户可以自行�
 ```bash
 $ composer require 96qbhy/hyperf-auth
 ```
+> hyperf 1.1 请使用 ^v1.0 版本
 
 ## 配置 - configuration
 使用 `Qbhy\HyperfAuth\AuthExceptionHandler` ，此步骤可选，开发者可以自行捕捉 `AuthException`  和 `JWTException` 进行处理

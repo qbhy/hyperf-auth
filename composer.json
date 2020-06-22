@@ -26,8 +26,8 @@
         "php": ">=7.2",
         "ext-swoole": ">=4.4",
         "96qbhy/simple-jwt": "^v1.2",
-        "hyperf/cache": "^1.1",
-        "hyperf/di": "1.1.*",
+        "hyperf/cache": "^2.0",
+        "hyperf/di": "^2.0",
         "ext-json": "*"
     },
     "suggest": {
@@ -36,14 +36,14 @@
     "require-dev": {
         "brainmaestro/composer-git-hooks": "^2.8",
         "friendsofphp/php-cs-fixer": "^2.14",
-        "hyperf/command": "^1.1",
-        "hyperf/config": "^1.1",
-        "hyperf/database": "^1.1",
-        "hyperf/framework": "^1.1",
-        "hyperf/redis": "^1.1",
-        "hyperf/session": "^1.1",
-        "hyperf/testing": "1.1.*",
-        "phpstan/phpstan": "^0.10.5",
+        "hyperf/command": "^2.0",
+        "hyperf/config": "^2.0",
+        "hyperf/database": "^2.0",
+        "hyperf/framework": "^2.0",
+        "hyperf/redis": "^2.0",
+        "hyperf/session": "^2.0",
+        "hyperf/testing": "^2.0",
+        "phpstan/phpstan": "^0.12",
         "swoft/swoole-ide-helper": "dev-master"
     },
     "config": {
