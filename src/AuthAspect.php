@@ -45,7 +45,7 @@ class AuthAspect extends AbstractAspect
         foreach ($guards as $name) {
             $guard = $this->auth->guard($name);
 
-            if ($guard->guest()) {
+            if (! $guard->user() instanceof Authenticatable) {
                 throw new UnauthorizedException("Without authorization from {$guard->getName()} guard");
             }
         }
