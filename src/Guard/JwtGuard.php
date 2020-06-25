@@ -15,9 +15,9 @@ use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Utils\Context;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
+use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\HyperfAuth\UserProvider;
-use Qbhy\SimpleJwt\Exceptions\JWTException;
 use Qbhy\SimpleJwt\JWTManager;
 
 class JwtGuard extends AbstractAuthGuard
@@ -91,10 +91,15 @@ class JwtGuard extends AbstractAuthGuard
                 return $user;
             }
 
-            throw new UnauthorizedException('The token is required.');
+            throw new UnauthorizedException('The token is required.', $this);
         } catch (\Throwable $exception) {
-            Context::set($key, $exception);
-            throw $exception;
+            $newException = $exception instanceof AuthException ? $exception : new UnauthorizedException(
+                $exception->getMessage(),
+                $this,
+                $exception
+            );
+            Context::set($key, $newException);
+            throw $newException;
         }
     }
 
@@ -102,9 +107,7 @@ class JwtGuard extends AbstractAuthGuard
     {
         try {
             return $this->user($token) instanceof Authenticatable;
-        } catch (UnauthorizedException $exception) {
-            return false;
-        } catch (JWTException $exception) {
+        } catch (AuthException $exception) {
             return false;
         }
     }

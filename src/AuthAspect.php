@@ -46,7 +46,7 @@ class AuthAspect extends AbstractAspect
             $guard = $this->auth->guard($name);
 
             if (! $guard->user() instanceof Authenticatable) {
-                throw new UnauthorizedException("Without authorization from {$guard->getName()} guard");
+                throw new UnauthorizedException("Without authorization from {$guard->getName()} guard", $guard);
             }
         }
 

@@ -14,27 +14,16 @@ namespace Qbhy\HyperfAuth;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 use Psr\Http\Message\ResponseInterface;
-use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
-use Qbhy\SimpleJwt\Exceptions\JWTException;
 use Throwable;
 
 class AuthExceptionHandler extends ExceptionHandler
 {
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
-        if ($throwable instanceof JWTException) {
-            $this->stopPropagation();
-            return $response->withStatus(401)->withBody(new SwooleStream($throwable->getMessage()));
-        }
         if ($throwable instanceof UnauthorizedException) {
             $this->stopPropagation();
-            return $response->withStatus(401)->withBody(new SwooleStream('Unauthorized.'));
-        }
-
-        if ($throwable instanceof AuthException) {
-            $this->stopPropagation();
-            return $response->withStatus(500)->withBody(new SwooleStream($throwable->getMessage()));
+            return $response->withStatus($throwable->getStatusCode())->withBody(new SwooleStream('Unauthorized.'));
         }
 
         // 交给下一个异常处理器
@@ -43,6 +32,6 @@ class AuthExceptionHandler extends ExceptionHandler
 
     public function isValid(Throwable $throwable): bool
     {
-        return $throwable instanceof AuthException or $throwable instanceof JWTException;
+        return $throwable instanceof UnauthorizedException;
     }
 }

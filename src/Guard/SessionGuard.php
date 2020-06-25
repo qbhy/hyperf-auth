@@ -14,6 +14,7 @@ namespace Qbhy\HyperfAuth\Guard;
 use Hyperf\Contract\SessionInterface;
 use Hyperf\Utils\Context;
 use Qbhy\HyperfAuth\Authenticatable;
+use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\HyperfAuth\UserProvider;
 
@@ -60,10 +61,15 @@ class SessionGuard extends AbstractAuthGuard
                 Context::set($key, $user ?? 0);
                 return $user;
             }
-            throw new UnauthorizedException('Unauthorized.');
+            throw new UnauthorizedException('Unauthorized.', $this);
         } catch (\Throwable $exception) {
-            Context::set($key, $exception);
-            throw $exception;
+            $newException = $exception instanceof AuthException ? $exception : new UnauthorizedException(
+                $exception->getMessage(),
+                $this,
+                $exception
+            );
+            Context::set($key, $newException);
+            throw $newException;
         }
     }
 
