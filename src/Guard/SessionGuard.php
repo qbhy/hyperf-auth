@@ -73,6 +73,15 @@ class SessionGuard extends AbstractAuthGuard
         }
     }
 
+    public function check(): bool
+    {
+        try {
+            return $this->user() instanceof Authenticatable;
+        } catch (AuthException $exception) {
+            return false;
+        }
+    }
+
     public function logout()
     {
         if ($this->session->has($this->sessionKey())) {
