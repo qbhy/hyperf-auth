@@ -18,6 +18,7 @@ use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\HyperfAuth\UserProvider;
+use Qbhy\SimpleJwt\Exceptions\TokenExpiredException;
 use Qbhy\SimpleJwt\JWTManager;
 
 class JwtGuard extends AbstractAuthGuard
@@ -129,8 +130,14 @@ class JwtGuard extends AbstractAuthGuard
         $token = $token ?? $this->parseToken();
 
         if ($token) {
-            $jwt = $this->jwtManager->parse($token);
-            $this->logout($token);
+            try {
+                $jwt = $this->jwtManager->parse($token);
+            } catch (TokenExpiredException $exception) {
+                $jwt = $exception->getJwt();
+            }
+
+            $this->jwtManager->addBlacklist($jwt);
+
             return $this->jwtManager->refresh($jwt)->token();
         }
 
