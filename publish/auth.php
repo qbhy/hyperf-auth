@@ -41,13 +41,13 @@ return [
              * 可选配置
              * jwt 生命周期，单位分钟
              */
-            'ttl' => env('SIMPLE_JWT_TTL', 60 * 60),
+            'ttl' => (int) env('SIMPLE_JWT_TTL', 60 * 60),
 
             /*
              * 可选配置
              * 允许过期多久以内的 token 进行刷新
              */
-            'refresh_ttl' => env('SIMPLE_JWT_REFRESH_TTL', 60 * 60 * 24 * 7),
+            'refresh_ttl' => (int) env('SIMPLE_JWT_REFRESH_TTL', 60 * 60 * 24 * 7),
 
             /*
              * 可选配置
