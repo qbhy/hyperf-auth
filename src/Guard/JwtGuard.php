@@ -73,25 +73,24 @@ class JwtGuard extends AbstractAuthGuard
 
     public function user(?string $token = null): ?Authenticatable
     {
-        $token = $token ?? $this->parseToken();
-        if (Context::has($key = $this->resultKey($token))) {
-            $result = Context::get($key);
-            if ($result instanceof \Throwable) {
-                throw $result;
-            }
-            return $result ?: null;
+        #直接从上下文取用户对象
+        $user = Context::get(Authenticatable::class);
+        #如果没有指定token则从当前上下文取，如果设置了则重新解析token进行获取
+        if ($token == null && $user instanceof Authenticatable) {
+            return $user;
         }
-
+        if ($token == null && $user instanceof \Throwable) {
+            throw $user;
+        }
+        $token = $token ?? $this->parseToken();
         try {
             if ($token) {
                 $jwt = $this->jwtManager->parse($token);
                 $uid = $jwt->getPayload()['uid'] ?? null;
                 $user = $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
-                Context::set($key, $user ?: 0);
-
+                Context::set(Authenticatable::class, $user ?: 0);
                 return $user;
             }
-
             throw new UnauthorizedException('The token is required.', $this);
         } catch (\Throwable $exception) {
             $newException = $exception instanceof AuthException ? $exception : new UnauthorizedException(
@@ -99,10 +98,11 @@ class JwtGuard extends AbstractAuthGuard
                 $this,
                 $exception
             );
-            Context::set($key, $newException);
+            Context::set(Authenticatable::class, $newException);
             throw $newException;
         }
     }
+    
 
     public function check(?string $token = null): bool
     {
