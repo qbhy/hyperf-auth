@@ -154,7 +154,7 @@ class JwtGuard extends AbstractAuthGuard
     public function logout($token = null)
     {
         if ($token = $token ?? $this->parseToken()) {
-            Context::destroy($this->resultKey($token));
+            Context::set($this->resultKey($token), null);
             $this->jwtManager->addBlacklist(
                 $this->jwtManager->parse($token)
             );
