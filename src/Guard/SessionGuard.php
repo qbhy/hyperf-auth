@@ -37,6 +37,9 @@ class SessionGuard extends AbstractAuthGuard
     public function login(Authenticatable $user)
     {
         $this->session->put($this->sessionKey(), $user->getId());
+
+        Context::set($this->resultKey(), $user);
+
         return true;
     }
 

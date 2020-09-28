@@ -63,7 +63,11 @@ class JwtGuard extends AbstractAuthGuard
 
     public function login(Authenticatable $user)
     {
-        return $this->jwtManager->make(['uid' => $user->getId()])->token();
+        $token = $this->jwtManager->make(['uid' => $user->getId()])->token();
+
+        Context::set($this->resultKey($token), $user);
+
+        return $token;
     }
 
     public function resultKey($token)
@@ -120,6 +124,7 @@ class JwtGuard extends AbstractAuthGuard
 
     /**
      * 刷新 token，旧 token 会失效.
+     *
      * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @throws \Qbhy\SimpleJwt\Exceptions\JWTException
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
@@ -130,6 +135,8 @@ class JwtGuard extends AbstractAuthGuard
         $token = $token ?? $this->parseToken();
 
         if ($token) {
+            Context::set($this->resultKey($token), null);
+
             try {
                 $jwt = $this->jwtManager->parse($token);
             } catch (TokenExpiredException $exception) {
