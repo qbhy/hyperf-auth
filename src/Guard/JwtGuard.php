@@ -33,6 +33,8 @@ class JwtGuard extends AbstractAuthGuard
      */
     protected $request;
 
+    protected $headerName = 'Authorization';
+    
     /**
      * JwtGuardAbstract constructor.
      */
@@ -43,13 +45,14 @@ class JwtGuard extends AbstractAuthGuard
         RequestInterface $request
     ) {
         parent::__construct($config, $name, $userProvider);
+        $this->headerName = $config['header_name'] ?? 'Authorization';
         $this->jwtManager = new JWTManager($config);
         $this->request = $request;
     }
 
     public function parseToken()
     {
-        $header = $this->request->header('Authorization', '');
+        $header = $this->request->header($this->headerName, '');
         if (Str::startsWith($header, 'Bearer ')) {
             return Str::substr($header, 7);
         }
