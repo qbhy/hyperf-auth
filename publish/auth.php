@@ -41,7 +41,7 @@ return [
              * 可选配置
              * jwt 默认头部token使用的字段
              */
-            'header_name' => 'Authorization',
+            'header_name' => env('JWT_HEADER_NAME', 'Authorization'),
 
             /*
              * 可选配置
