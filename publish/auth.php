@@ -39,6 +39,12 @@ return [
 
             /*
              * 可选配置
+             * jwt 默认头部token使用的字段
+             */
+            'header_name' => env('JWT_HEADER_NAME', 'Authorization'),
+
+            /*
+             * 可选配置
              * jwt 生命周期，单位分钟
              */
             'ttl' => (int) env('SIMPLE_JWT_TTL', 60 * 60),
