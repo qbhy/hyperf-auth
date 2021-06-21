@@ -21,13 +21,8 @@ class AuthExceptionHandler extends ExceptionHandler
 {
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
-        if ($throwable instanceof UnauthorizedException) {
-            $this->stopPropagation();
-            return $response->withStatus($throwable->getStatusCode())->withBody(new SwooleStream('Unauthorized.'));
-        }
-
-        // 交给下一个异常处理器
-        return $response;
+        $this->stopPropagation();
+        return $response->withStatus($throwable->getStatusCode())->withBody(new SwooleStream('Unauthorized.'));
     }
 
     public function isValid(Throwable $throwable): bool
