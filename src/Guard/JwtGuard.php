@@ -34,7 +34,7 @@ class JwtGuard extends AbstractAuthGuard
     protected $request;
 
     protected $headerName = 'Authorization';
-    
+
     /**
      * JwtGuardAbstract constructor.
      */
