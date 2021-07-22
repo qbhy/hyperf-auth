@@ -90,7 +90,7 @@ class ExampleTest extends AbstractTestCase
         $this->assertTrue($guard->user() instanceof Authenticatable);
     }
 
-    public function testOnceGuard()
+    public function testSsoGuard()
     {
         $guard = $this->auth()->guard('sso');
         $this->assertTrue($guard instanceof SsoGuard);

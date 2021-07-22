@@ -20,7 +20,7 @@ return [
     'guards' => [
         'sso' => [
             // 支持的设备，用英文逗号隔开
-            'clients' => explode(',', env('AUTH_ONCE_CLIENTS', 'pc')),
+            'clients' => explode(',', env('AUTH_SSO_CLIENTS', 'pc')),
 
             // hyperf/redis 实例
             'redis' => function () {
