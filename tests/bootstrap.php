@@ -43,6 +43,14 @@ $container->define(\Hyperf\Contract\SessionInterface::class, function () {
 });
 
 $container->define(\Qbhy\HyperfAuth\AuthManager::class, function () {
+    $jwtConfig = [
+        'driver' => JwtGuard::class, // guard 类名
+        'secret' => 'test.secret',
+        'provider' => 'test-provider', // 不设置的话用上面的 default.provider 或者用 'default'
+        'encoder' => null,
+        'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
+    ];
+
     return new \Qbhy\HyperfAuth\AuthManager(new \Hyperf\Config\Config([
         'auth' => [
             'default' => [
@@ -51,13 +59,21 @@ $container->define(\Qbhy\HyperfAuth\AuthManager::class, function () {
             ],
 
             'guards' => [
-                'jwt' => [
-                    'driver' => JwtGuard::class, // guard 类名
-                    'secret' => 'test.secret',
-                    'provider' => 'test-provider', // 不设置的话用上面的 default.provider 或者用 'default'
-                    'encoder' => null,
-                    'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
-                ],
+                'sso' => array_merge($jwtConfig, [
+                    'driver' => \Qbhy\HyperfAuth\Guard\SsoGuard::class,
+
+                    // 支持的设备，用英文逗号隔开
+                    'clients' => ['pc', 'weapp'],
+
+                    // hyperf/redis 实例
+                    'redis' => function () {
+                        return make(\Hyperf\Redis\Redis::class);
+                    },
+
+                    // 自定义 redis key，必须包含 {uid}，{uid} 会被替换成用户ID
+                    'redis_key' => 'u:token:{uid}',
+                ]),
+                'jwt' => $jwtConfig,
                 'session' => [
                     'driver' => SessionGuard::class, // guard 类名
                     'provider' => 'test-provider', // 不设置的话用上面的 default.provider 或者用 'default'

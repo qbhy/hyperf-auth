@@ -18,11 +18,19 @@ return [
         'provider' => 'users',
     ],
     'guards' => [
-        'once' => [
+        'sso' => [
             // 支持的设备，用英文逗号隔开
             'clients' => explode(',', env('AUTH_ONCE_CLIENTS', 'pc')),
 
-            'driver' => Qbhy\HyperfAuth\Guard\OnceGuard::class,
+            // hyperf/redis 实例
+            'redis' => function () {
+                return make(\Hyperf\Redis\Redis::class);
+            },
+
+            // 自定义 redis key，必须包含 {uid}，{uid} 会被替换成用户ID
+            'redis_key' => 'u:token:{uid}',
+
+            'driver' => Qbhy\HyperfAuth\Guard\SsoGuard::class,
             'provider' => 'users',
 
             /*

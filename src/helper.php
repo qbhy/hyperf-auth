@@ -15,8 +15,8 @@ use Qbhy\HyperfAuth\AuthManager;
 if (! function_exists('auth')) {
     /**
      * 建议视图中使用该函数，其他地方请使用注入.
-     * @throws \Qbhy\HyperfAuth\GuardException
-     * @throws \Qbhy\HyperfAuth\UserProviderException
+     * @throws \Qbhy\HyperfAuth\Exception\GuardException
+     * @throws \Qbhy\HyperfAuth\Exception\UserProviderException
      * @return AuthManager|mixed|\Qbhy\HyperfAuth\AuthGuard
      */
     function auth(?string $guard = null)

@@ -18,7 +18,9 @@ use Qbhy\HyperfAuth\AuthGuard;
 use Qbhy\HyperfAuth\AuthManager;
 use Qbhy\HyperfAuth\Guard\JwtGuard;
 use Qbhy\HyperfAuth\Guard\SessionGuard;
+use Qbhy\HyperfAuth\Guard\SsoGuard;
 use Qbhy\HyperfAuth\Provider\EloquentProvider;
+use Qbhy\SimpleJwt\Exceptions\TokenBlacklistException;
 use Qbhy\SimpleJwt\JWT;
 
 /**
@@ -58,7 +60,13 @@ class ExampleTest extends AbstractTestCase
         $token = $guard->login($this->user());
 
         $this->assertTrue(is_string($newToken = $guard->refresh($token))); // 测试刷新 token
-        $this->assertTrue($guard->guest($token)); // 试试旧 token 是否失效
+
+        try {
+            $this->assertTrue($guard->guest($token)); // 试试新 token 是否生效
+        } catch (TokenBlacklistException $exception) {
+            $this->assertTrue(true); // 试试旧 token 是否失效
+        }
+
         $this->assertTrue($guard->check($newToken)); // 试试新 token 是否生效
 
         $token = $newToken;
@@ -80,6 +88,14 @@ class ExampleTest extends AbstractTestCase
 
         $this->assertTrue($guard->login($user));
         $this->assertTrue($guard->user() instanceof Authenticatable);
+    }
+
+    public function testOnceGuard()
+    {
+        $guard = $this->auth()->guard('sso');
+        $this->assertTrue($guard instanceof SsoGuard);
+        $this->assertTrue($guard->getProvider() instanceof EloquentProvider);
+        // todo: sso guard 未测试
     }
 
     protected function auth()

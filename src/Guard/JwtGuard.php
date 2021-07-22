@@ -73,9 +73,14 @@ class JwtGuard extends AbstractAuthGuard
         return $token;
     }
 
+    /**
+     * 获取用于存到 context 的 key.
+     * @param $token
+     * @return string
+     */
     public function resultKey($token)
     {
-        return $this->name . '.auth.result.' . $token;
+        return $this->name . '.auth.result.' . $this->getJti($token);
     }
 
     public function user(?string $token = null): ?Authenticatable
@@ -169,5 +174,17 @@ class JwtGuard extends AbstractAuthGuard
     public function getJwtManager(): JWTManager
     {
         return $this->jwtManager;
+    }
+
+    /**
+     * 获取 token 标识.
+     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
+     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
+     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
+     * @return mixed|string
+     */
+    protected function getJti(string $token): string
+    {
+        return $this->getJwtManager()->parse($token)->getPayload()['jti'] ?? md5($token);
     }
 }

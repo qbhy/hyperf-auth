@@ -44,6 +44,7 @@
         "hyperf/redis": "^2.0",
         "hyperf/session": "^2.0",
         "hyperf/testing": "^2.0",
+        "hyperf/utils": "^2.2",
         "phpstan/phpstan": "^0.12",
         "swoft/swoole-ide-helper": "dev-master"
     },

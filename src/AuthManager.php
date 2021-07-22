@@ -21,6 +21,7 @@ use Qbhy\HyperfAuth\Exception\UserProviderException;
  * @method null|Authenticatable user()
  * @method bool check()
  * @method logout()
+ * @method string getName()
  * @method bool guest()
  * @method getProvider()
  * @mixin AuthGuard
