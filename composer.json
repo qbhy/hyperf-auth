@@ -40,6 +40,7 @@
         "hyperf/command": "^2.0",
         "hyperf/config": "^2.0",
         "hyperf/database": "^2.0",
+        "hyperf/event": "^2.2",
         "hyperf/framework": "^2.0",
         "hyperf/redis": "^2.0",
         "hyperf/session": "^2.0",

@@ -92,10 +92,27 @@ class ExampleTest extends AbstractTestCase
 
     public function testSsoGuard()
     {
+        /** @var SsoGuard $guard */
         $guard = $this->auth()->guard('sso');
         $this->assertTrue($guard instanceof SsoGuard);
         $this->assertTrue($guard->getProvider() instanceof EloquentProvider);
-        // todo: sso guard 未测试
+        $user = $this->user(10);
+        $token = $guard->login($user, 'pc');
+        $this->assertTrue(is_string($token));
+        $this->assertTrue($guard->check($token));
+
+//        // 抢线登录
+//        $newToken = $guard->login($user, 'pc');
+//        var_dump('抢线的token', $newToken);
+//        $this->assertTrue($newToken != $token);
+//        $this->assertTrue($guard->check($newToken));
+//
+//        // 测试旧 token 还能不能用
+//        $this->assertTrue($guard->guest($token));
+//
+//        // 第二个设备登录
+//        $weappToken = $guard->login($user, 'weapp');
+//        $this->assertTrue($guard->check($weappToken));
     }
 
     protected function auth()

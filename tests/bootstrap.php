@@ -72,6 +72,9 @@ $container->define(\Qbhy\HyperfAuth\AuthManager::class, function () {
 
                     // 自定义 redis key，必须包含 {uid}，{uid} 会被替换成用户ID
                     'redis_key' => 'u:token:{uid}',
+                    //                    'cache' => function () {
+                    //                        return make(\Qbhy\HyperfAuth\HyperfRedisCache::class);
+                    //                    },
                 ]),
                 'jwt' => $jwtConfig,
                 'session' => [

@@ -75,6 +75,7 @@ class JwtGuard extends AbstractAuthGuard
 
     /**
      * 获取用于存到 context 的 key.
+     *
      * @param $token
      * @return string
      */
@@ -178,9 +179,10 @@ class JwtGuard extends AbstractAuthGuard
 
     /**
      * 获取 token 标识.
+     *
+     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
-     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @return mixed|string
      */
     protected function getJti(string $token): string
