@@ -51,7 +51,7 @@ class SsoGuard extends JwtGuard
 
         if (! empty($previousToken = $this->redis->hGet($redisKey, $client))) {
             // 如果存在上一个 token，就给他拉黑，也就是强制下线
-            $this->logout($token);
+            $this->getJwtManager()->addBlacklist($token);
             $this->redis->hDel($redisKey, $client);
             $this->eventDispatcher->dispatch(new ForcedOfflineEvent($user, $client));
         }
