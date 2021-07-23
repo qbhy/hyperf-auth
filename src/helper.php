@@ -30,3 +30,16 @@ if (! function_exists('auth')) {
         return $auth->guard($guard);
     }
 }
+
+if (! function_exists('str_random')) {
+    function str_random($num = 6): string
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+        for ($i = 0; $i < $num; ++$i) {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+        return $randomString;
+    }
+}

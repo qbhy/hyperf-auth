@@ -25,7 +25,7 @@
     "require": {
         "php": ">=7.2",
         "ext-swoole": ">=4.4",
-        "96qbhy/simple-jwt": "^v1.2",
+        "96qbhy/simple-jwt": "^v1.3",
         "hyperf/cache": "^2.0",
         "hyperf/di": "^2.0",
         "ext-json": "*",
@@ -53,7 +53,7 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "co-phpunit -c phpunit.xml --colors=always",
+        "test": "phpunit -c phpunit.xml --colors=always",
         "analyse": "phpstan analyse --memory-limit 300M -l 0 ./src",
         "cs-fix": "php-cs-fixer fix $1",
         "post-install-cmd": "cghooks add --ignore-lock",
@@ -70,6 +70,12 @@
                 "git add .",
                 "composer test"
             ]
+        }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
         }
     }
 }

@@ -66,7 +66,10 @@ class JwtGuard extends AbstractAuthGuard
 
     public function login(Authenticatable $user)
     {
-        $token = $this->jwtManager->make(['uid' => $user->getId()])->token();
+        $token = $this->jwtManager->make([
+            'uid' => $user->getId(),
+            's' => str_random(),
+        ])->token();
 
         Context::set($this->resultKey($token), $user);
 
@@ -81,7 +84,7 @@ class JwtGuard extends AbstractAuthGuard
      */
     public function resultKey($token)
     {
-        return $this->name . '.auth.result.' . $this->getJti($token);
+        return $this->name . '.auth.result' . $this->getJti($token);
     }
 
     public function user(?string $token = null): ?Authenticatable
@@ -89,7 +92,7 @@ class JwtGuard extends AbstractAuthGuard
         $token = $token ?? $this->parseToken();
         if (Context::has($key = $this->resultKey($token))) {
             $result = Context::get($key);
-            if ($result instanceof \Throwable) {
+            if ($result instanceof UnauthorizedException) {
                 throw $result;
             }
             return $result ?: null;
@@ -141,7 +144,7 @@ class JwtGuard extends AbstractAuthGuard
      */
     public function refresh(?string $token = null): ?string
     {
-        $token = $token ?? $this->parseToken();
+        $token = $token ?: $this->parseToken();
 
         if ($token) {
             Context::set($this->resultKey($token), null);
@@ -180,13 +183,13 @@ class JwtGuard extends AbstractAuthGuard
     /**
      * 获取 token 标识.
      *
-     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
+     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @return mixed|string
      */
     protected function getJti(string $token): string
     {
-        return $this->getJwtManager()->parse($token)->getPayload()['jti'] ?? md5($token);
+        return $this->getJwtManager()->justParse($token)->getPayload()['jti'] ?? md5($token);
     }
 }

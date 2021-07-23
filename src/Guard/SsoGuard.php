@@ -47,15 +47,14 @@ class SsoGuard extends JwtGuard
 
     public function login(Authenticatable $user, string $client = null)
     {
-        $client = $client = $this->getClients()[0]; // 需要至少配置一个客户端
+        $client = $client ?: $this->getClients()[0]; // 需要至少配置一个客户端
         $token = parent::login($user);
         $redisKey = str_replace('{uid}', (string) $user->getId(), $this->config['redis_key'] ?? 'u:token:{uid}');
 
-        if (! empty($previousToken = $this->redis->hGet($redisKey, $client))) {
+        if (! empty($previousToken = $this->redis->hGet($redisKey, $client)) && $previousToken != $token) {
             // 如果存在上一个 token，就给他拉黑，也就是强制下线
-            Context::set($this->resultKey($previousToken), 0);
-            $this->getJwtManager()->addBlacklist($previousToken);
-            $this->redis->hDel($redisKey, $client);
+            Context::set($this->resultKey($previousToken), null);
+            $this->getJwtManager()->addBlacklist($this->getJwtManager()->justParse($previousToken));
             $this->eventDispatcher->dispatch(new ForcedOfflineEvent($user, $client));
         }
 
