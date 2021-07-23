@@ -19,7 +19,7 @@ return [
     ],
     'guards' => [
         'sso' => [
-            // 支持的设备，用英文逗号隔开
+            // 支持的设备，env配置时用英文逗号隔开
             'clients' => explode(',', env('AUTH_SSO_CLIENTS', 'pc')),
 
             // hyperf/redis 实例

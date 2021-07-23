@@ -1,4 +1,5 @@
 # qbhy/hyperf-auth
+
 hyperf 的 auth 组件，目前支持 jwt、session 驱动。用户可以自行扩展。  
 本组件参考了 laravel 的 auth 组件设计，使用体验大体和 laravel 的 auth 差不多。
 
@@ -9,15 +10,26 @@ hyperf 的 auth 组件，目前支持 jwt、session 驱动。用户可以自行�
 [![Monthly Downloads](https://poser.pugx.org/96qbhy/hyperf-auth/d/monthly)](https://packagist.org/packages/96qbhy/hyperf-auth)
 [![Daily Downloads](https://poser.pugx.org/96qbhy/hyperf-auth/d/daily)](https://packagist.org/packages/96qbhy/hyperf-auth)
 
+## 支持的验证方式
+
+* session
+* jwt
+* sso （单点登录，继承自jwt，需要 hyperf/redis，支持多客户端）
+
+> 任何问题请加QQ群提问：873213948
 
 ## 安装 - install
+
 ```bash
 $ composer require 96qbhy/hyperf-auth
 ```
+
 > hyperf 1.1 请使用 ^v1.0 版本
 
 ## 配置 - configuration
+
 使用 `Qbhy\HyperfAuth\AuthExceptionHandler` ，此步骤可选，开发者可以自行捕捉 `AuthException`  和 `JWTException` 进行处理
+
 ```php
 <?php
 // config/autoload/exceptions.php
@@ -31,11 +43,14 @@ return [
 ```
 
 发布配置 vendor:publish
+
 ```bash
 $ php bin/hyperf.php vendor:publish 96qbhy/hyperf-auth
 ```
+
 修改 `config/autoload/auth.php`
 > 如不需要自定义 guard、model 和 user provider，则可以不修改
+
 ```php
 <?php
 
@@ -49,6 +64,21 @@ return [
         'provider'=> 'users',
     ] ,
     'guards' => [ // 开发者可以在这里添加自己的 guard ，guard Qbhy\HyperfAuth\AuthGuard 接口
+        'sso'=> [
+            // 支持的设备，env配置时用英文逗号隔开
+            'clients' => explode(',', env('AUTH_SSO_CLIENTS', 'pc')),
+
+            // hyperf/redis 实例
+            'redis' => function () {
+                return make(\Hyperf\Redis\Redis::class);
+            },
+
+            // 自定义 redis key，必须包含 {uid}，{uid} 会被替换成用户ID
+            'redis_key' => 'u:token:{uid}',
+
+            'driver' => Qbhy\HyperfAuth\Guard\SsoGuard::class,
+            // ...$jwtConfig, // 其他配置和 jwt guard的配置一样
+        ],
         'jwt' => [
             'driver' => Qbhy\HyperfAuth\Guard\JwtGuard::class,
             'provider' => 'users',
@@ -78,7 +108,9 @@ return [
 ```
 
 ## 使用 - usage
+
 > 以下是伪代码，仅供参考。Auth 注解可以用于类或者方法。
+
 ```php
 <?php
 declare(strict_types=1);
@@ -115,6 +147,19 @@ class IndexController extends AbstractController
           'status' => $this->auth->guard('session')->login($user),
       ];
   }
+  
+  /**
+   * @GetMapping(path="/sso/login")
+   * @return array
+   */
+  public function ssoLogin()
+  {
+      /** @var User $user */
+      $user = User::query()->firstOrCreate(['name' => 'test', 'avatar' => 'avatar']);
+      return [
+          'token' => $this->auth->guard('sso')->login($user, 'pc'), // sso 方法支持第二个参数，传定义好的客户端
+      ];
+  }
 
   /**
    * @Auth("session")
@@ -139,7 +184,9 @@ class IndexController extends AbstractController
   }
 }
 ```
+
 除了上面的 Auth 注解用法，还支持中间件用法
+
 ```php
 <?php
 
@@ -176,8 +223,10 @@ class IndexController extends AbstractController
   }
 }
 ```
+
 由于 hyperf 还不支持中间件传参，所以 `Qbhy\HyperfAuth\AuthMiddleware` 中间件只支持默认guard校验  
 但是开发者可以继承该中间自行扩展。或者直接使用 Auth 注解进行自定义 guard 校验，与中间件的效果是一致的。
+
 ```php
 <?php
 
@@ -192,6 +241,7 @@ class SessionAuthMiddleware extends AuthMiddleware {
 ```
 
 ## 更多用法 - API
+
 ```php
 <?php
 
@@ -218,12 +268,16 @@ $auth->guard()->login($user); // guard 方法不传参数或者传null都将使�
 // 使用 session 驱动需要安装 hyperf/session 并启用 session
 $auth->guard('session')->login($user); // guard 方法不传参数或者传null都会获取默认值
 ```
+
 > 注意事项：使用 jwt 驱动且令牌异常的情况下调用 user 方法，会抛出相应的异常，需要自行捕捉处理，不想抛异常，可以调用 check 进行判断。
 
 ## 扩展 - extension
+
 由于本组件参考了 laravel auth 的设计，所以 guard 和 user provider 的扩展也和 laravel 类似。只需要实现对应接口即可。
-* guard ===> Qbhy\HyperfAuth\AuthGuard  
-* user provider ===> Qbhy\HyperfAuth\UserProvider  
+
+* guard ===> Qbhy\HyperfAuth\AuthGuard
+* user provider ===> Qbhy\HyperfAuth\UserProvider
+
 > 扩展教程请移步 [hyperf教程之hyperf-auth高级用法](https://mp.weixin.qq.com/s/jlbbN6zhWEVteimpi0mLjg)
 
 https://github.com/qbhy/hyperf-auth  

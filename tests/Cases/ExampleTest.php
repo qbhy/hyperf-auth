@@ -112,9 +112,6 @@ class ExampleTest extends AbstractTestCase
         // 第二个设备登录
         $weappToken = $guard->login($user, 'weapp');
         $this->assertTrue($guard->check($weappToken));
-
-        $this->assertTrue((1 ?: 2) == 1);
-        $this->assertTrue((1 ?? 2) == 1);
     }
 
     protected function auth()
