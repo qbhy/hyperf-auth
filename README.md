@@ -1,6 +1,6 @@
 # qbhy/hyperf-auth
 
-hyperf 的 auth 组件，目前支持 jwt、session 驱动。用户可以自行扩展。  
+hyperf 的 auth 组件，目前支持 jwt、session、sso 驱动。用户可以自行扩展。  
 本组件参考了 laravel 的 auth 组件设计，使用体验大体和 laravel 的 auth 差不多。
 
 [![Latest Stable Version](https://poser.pugx.org/96qbhy/hyperf-auth/v/stable)](https://packagist.org/packages/96qbhy/hyperf-auth)
