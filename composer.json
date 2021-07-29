@@ -46,8 +46,10 @@
         "hyperf/session": "^2.0",
         "hyperf/testing": "^2.0",
         "hyperf/utils": "^2.2",
+        "itsgoingd/clockwork": "^5.0",
         "phpstan/phpstan": "^0.12",
-        "swoft/swoole-ide-helper": "dev-master"
+        "swoft/swoole-ide-helper": "dev-master",
+        "symfony/var-dumper": "^5.3"
     },
     "config": {
         "sort-packages": true

@@ -66,7 +66,7 @@ class JwtGuard extends AbstractAuthGuard
 
     public function login(Authenticatable $user)
     {
-        $token = $this->jwtManager->make([
+        $token = $this->getJwtManager()->make([
             'uid' => $user->getId(),
             's' => str_random(),
         ])->token();
@@ -100,7 +100,7 @@ class JwtGuard extends AbstractAuthGuard
 
         try {
             if ($token) {
-                $jwt = $this->jwtManager->parse($token);
+                $jwt = $this->getJwtManager()->parse($token);
                 $uid = $jwt->getPayload()['uid'] ?? null;
                 $user = $uid ? $this->userProvider->retrieveByCredentials($uid) : null;
                 Context::set($key, $user ?: 0);
@@ -150,14 +150,14 @@ class JwtGuard extends AbstractAuthGuard
             Context::set($this->resultKey($token), null);
 
             try {
-                $jwt = $this->jwtManager->parse($token);
+                $jwt = $this->getJwtManager()->parse($token);
             } catch (TokenExpiredException $exception) {
                 $jwt = $exception->getJwt();
             }
 
-            $this->jwtManager->addBlacklist($jwt);
+            $this->getJwtManager()->addBlacklist($jwt);
 
-            return $this->jwtManager->refresh($jwt)->token();
+            return $this->getJwtManager()->refresh($jwt)->token();
         }
 
         return null;
@@ -167,8 +167,8 @@ class JwtGuard extends AbstractAuthGuard
     {
         if ($token = $token ?? $this->parseToken()) {
             Context::set($this->resultKey($token), null);
-            $this->jwtManager->addBlacklist(
-                $this->jwtManager->parse($token)
+            $this->getJwtManager()->addBlacklist(
+                $this->getJwtManager()->parse($token)
             );
             return true;
         }
@@ -182,14 +182,15 @@ class JwtGuard extends AbstractAuthGuard
 
     /**
      * 获取 token 标识.
+     * 为了性能，直接 md5.
      *
+     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
-     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @return mixed|string
      */
     protected function getJti(string $token): string
     {
-        return $this->getJwtManager()->justParse($token)->getPayload()['jti'] ?? md5($token);
+        return md5($token);
     }
 }

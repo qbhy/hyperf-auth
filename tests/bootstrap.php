@@ -48,6 +48,11 @@ $container->define(\Qbhy\HyperfAuth\AuthManager::class, function () {
         'secret' => 'test.secret',
         'provider' => 'test-provider', // 不设置的话用上面的 default.provider 或者用 'default'
         'encoder' => null,
+        /*
+         * 可选配置
+         * 默认使用的加密类
+         */
+        'default' => \Qbhy\SimpleJwt\EncryptAdapters\SHA1Encrypter::class,
         'cache' => new FilesystemCache(sys_get_temp_dir()), // 如果需要分布式部署，请选择 redis 或者其他支持分布式的缓存驱动
     ];
 

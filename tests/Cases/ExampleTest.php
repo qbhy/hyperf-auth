@@ -41,15 +41,36 @@ class ExampleTest extends AbstractTestCase
         $this->assertTrue(auth() instanceof AuthManager);
     }
 
+    /**
+     * 大概用时：0.028848648071289 ms.
+     */
+    public function testRandomStr()
+    {
+        dev_clock('随机字符串', function () {
+            str_random();
+        });
+        $this->assertTrue(true);
+    }
+
     public function testJwtGuard()
     {
         /** @var AuthManager|JwtGuard $auth */
         $auth = $this->auth();
         /** @var JwtGuard $guard */
         $guard = $auth->guard();
-        $token = $auth->login($this->user());
-        $this->assertTrue($auth->check($token));
-        $this->assertTrue(! $auth->guest($token));
+        $user = $this->user();
+
+        $token = dev_clock('jwt login 方法', function () use ($auth, $user) {
+            return $auth->login($user);
+        });
+
+        $this->assertTrue(dev_clock('jwt check 方法', function () use ($auth, $token) {
+            return $auth->check($token);
+        }));
+
+        $this->assertTrue(dev_clock('jwt guest 方法', function () use ($auth, $token) {
+            return ! $auth->guest($token);
+        }));
 
         // 测试默认 guard
         $this->assertTrue($guard instanceof AuthGuard);
@@ -59,7 +80,9 @@ class ExampleTest extends AbstractTestCase
         $jwtManager = $guard->getJwtManager();
         $token = $guard->login($this->user());
 
-        $this->assertTrue(is_string($newToken = $guard->refresh($token))); // 测试刷新 token
+        $this->assertTrue(is_string($newToken = dev_clock('jwt refresh 方法', function () use ($guard, $token) {
+            return $guard->refresh($token);
+        }))); // 测试刷新 token
 
         try {
             $this->assertTrue($guard->guest($token)); // 试试新 token 是否生效
@@ -96,6 +119,7 @@ class ExampleTest extends AbstractTestCase
         $guard = $this->auth()->guard('sso');
         $this->assertTrue($guard instanceof SsoGuard);
         $this->assertTrue($guard->getProvider() instanceof EloquentProvider);
+
         $user = $this->user(10);
         $token = $guard->login($user, 'pc');
         $this->assertTrue(is_string($token));

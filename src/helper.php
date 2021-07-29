@@ -15,8 +15,8 @@ use Qbhy\HyperfAuth\AuthManager;
 if (! function_exists('auth')) {
     /**
      * 建议视图中使用该函数，其他地方请使用注入.
-     * @throws \Qbhy\HyperfAuth\Exception\GuardException
      * @throws \Qbhy\HyperfAuth\Exception\UserProviderException
+     * @throws \Qbhy\HyperfAuth\Exception\GuardException
      * @return AuthManager|mixed|\Qbhy\HyperfAuth\AuthGuard
      */
     function auth(?string $guard = null)
@@ -37,9 +37,20 @@ if (! function_exists('str_random')) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
         for ($i = 0; $i < $num; ++$i) {
-            $index = rand(0, strlen($characters) - 1);
+            $index = rand(0, 61);
             $randomString .= $characters[$index];
         }
         return $randomString;
+    }
+}
+
+if (! function_exists('dev_clock')) {
+    function dev_clock(string $title, callable $handler)
+    {
+        $start = microtime(true);
+        $result = $handler();
+        $end = microtime(true);
+        dump($title . ' 用时：' . (($end - $start) * 1000) . 'ms');
+        return $result;
     }
 }
