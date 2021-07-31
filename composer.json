@@ -37,7 +37,7 @@
     "require-dev": {
         "brainmaestro/composer-git-hooks": "^2.8",
         "friendsofphp/php-cs-fixer": "^2.14",
-        "hyperf/command": "^2.0",
+        "hyperf/command": "^2.2",
         "hyperf/config": "^2.0",
         "hyperf/database": "^2.0",
         "hyperf/event": "^2.2",
@@ -49,6 +49,7 @@
         "itsgoingd/clockwork": "^5.0",
         "phpstan/phpstan": "^0.12",
         "swoft/swoole-ide-helper": "dev-master",
+        "symfony/console": "^5.3",
         "symfony/var-dumper": "^5.3"
     },
     "config": {

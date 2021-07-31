@@ -13,6 +13,7 @@ namespace HyperfTest\Cases;
 
 use Hyperf\Utils\ApplicationContext;
 use HyperfTest\DemoUser;
+use Qbhy\HyperfAuth\AuthCommand;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\AuthGuard;
 use Qbhy\HyperfAuth\AuthManager;
@@ -22,6 +23,8 @@ use Qbhy\HyperfAuth\Guard\SsoGuard;
 use Qbhy\HyperfAuth\Provider\EloquentProvider;
 use Qbhy\SimpleJwt\Exceptions\TokenBlacklistException;
 use Qbhy\SimpleJwt\JWT;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @internal
@@ -136,6 +139,13 @@ class ExampleTest extends AbstractTestCase
         // 第二个设备登录
         $weappToken = $guard->login($user, 'weapp');
         $this->assertTrue($guard->check($weappToken));
+    }
+
+    public function testCommand()
+    {
+        $command = new AuthCommand();
+        $command->run(new ArrayInput([]), new ConsoleOutput());
+        $this->assertTrue(true);
     }
 
     protected function auth()

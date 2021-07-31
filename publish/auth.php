@@ -38,7 +38,7 @@ return [
             * 必填
             * jwt 服务端身份标识
             */
-            'secret' => env('SIMPLE_JWT_SECRET'),
+            'secret' => env('SSO_JWT_SECRET'),
 
             /*
              * 可选配置

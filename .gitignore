@@ -6,3 +6,4 @@ composer.lock
 .idea
 runtime
 config
+.env*
