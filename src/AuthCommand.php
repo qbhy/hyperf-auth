@@ -25,18 +25,19 @@ class AuthCommand extends HyperfCommand
      *
      * @var string
      */
-    protected $name = 'gen:auth-secret';
+    protected $name = 'gen:auth-env';
 
     public function handle()
     {
+        $this->gen('AUTH_SSO_CLIENTS', 'h5,weapp');
         $this->gen('SSO_JWT_SECRET');
         $this->gen('SIMPLE_JWT_SECRET');
     }
 
-    public function gen($key)
+    public function gen($key, string $value = null)
     {
         if (empty(env($key))) {
-            file_put_contents(BASE_PATH . '/.env', sprintf(PHP_EOL . '%s=%s', $key, str_random(16)), FILE_APPEND);
+            file_put_contents(BASE_PATH . '/.env', sprintf(PHP_EOL . '%s=%s', $key, $value ?? str_random(16)), FILE_APPEND);
             $this->info($key . ' 已生成!');
         } else {
             $this->info($key . ' 已存在!');
