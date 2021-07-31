@@ -43,9 +43,13 @@ return [
 ```
 
 发布配置 vendor:publish
-
 ```bash
-$ php bin/hyperf.php vendor:publish 96qbhy/hyperf-auth
+php bin/hyperf.php vendor:publish 96qbhy/hyperf-auth
+```
+
+生成 `.env` 配置项 
+```bash
+php bin/hyperf.php gen:auth-env
 ```
 
 修改 `config/autoload/auth.php`
