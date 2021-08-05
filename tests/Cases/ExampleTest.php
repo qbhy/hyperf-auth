@@ -11,8 +11,11 @@ declare(strict_types=1);
  */
 namespace HyperfTest\Cases;
 
+use Hyperf\HttpMessage\Server\Request;
 use Hyperf\Utils\ApplicationContext;
+use Hyperf\Utils\Context;
 use HyperfTest\DemoUser;
+use Psr\Http\Message\ServerRequestInterface;
 use Qbhy\HyperfAuth\AuthCommand;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\AuthGuard;
@@ -62,6 +65,12 @@ class ExampleTest extends AbstractTestCase
         /** @var JwtGuard $guard */
         $guard = $auth->guard();
         $user = $this->user();
+
+        Context::set(ServerRequestInterface::class, new Request('POST', '/'));
+        $this->assertTrue(dev_clock('jwt guest 方法', function () use ($guard) {
+            // 没有传任何token
+            return $guard->guest();
+        }));
 
         $token = dev_clock('jwt login 方法', function () use ($auth, $user) {
             return $auth->login($user);

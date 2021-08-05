@@ -90,7 +90,7 @@ class JwtGuard extends AbstractAuthGuard
     public function user(?string $token = null): ?Authenticatable
     {
         $token = $token ?? $this->parseToken();
-        if (Context::has($key = $this->resultKey($token))) {
+        if (Context::has($key = is_string($token) ? $this->resultKey($token) : '_nothing')) {
             $result = Context::get($key);
             if ($result instanceof UnauthorizedException) {
                 throw $result;
@@ -184,9 +184,9 @@ class JwtGuard extends AbstractAuthGuard
      * 获取 token 标识.
      * 为了性能，直接 md5.
      *
-     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
+     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @return mixed|string
      */
     protected function getJti(string $token): string
