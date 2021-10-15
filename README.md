@@ -161,7 +161,7 @@ class IndexController extends AbstractController
       /** @var User $user */
       $user = User::query()->firstOrCreate(['name' => 'test', 'avatar' => 'avatar']);
       return [
-          'token' => $this->auth->guard('sso')->login($user, 'pc'), // sso 方法支持第二个参数，传定义好的客户端
+          'token' => $this->auth->guard('sso')->login($user, [],  'pc'), // sso 方法支持第二个参数，传定义好的客户端
       ];
   }
 
@@ -266,6 +266,7 @@ $jwtGuard->user('your token or null'); // jwt 驱动支持手动传入 token，�
 $jwtGuard->check('your token or null');
 $jwtGuard->guest('your token or null');
 $jwtGuard->refresh('your token or null'); // 该方法返回新的 token 或者 null
+$jwtGuard->login($user, ['sub' => 'qbhy0715','iss' => 'hyperf-auth',]); // 自定义payload
 
 $auth->guard()->login($user); // guard 方法不传参数或者传null都将使用默认值
 
