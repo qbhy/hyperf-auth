@@ -72,6 +72,11 @@ class ExampleTest extends AbstractTestCase
             return $guard->guest();
         }));
 
+        $this->assertTrue($guard->getJwtManager()->justParse($guard->login($user, [
+            'sub' => 'qbhy0715',
+            'iss' => 'hyperf-auth',
+        ]))->getPayload()['sub'] == 'qbhy0715');
+
         $token = dev_clock('jwt login 方法', function () use ($auth, $user) {
             return $auth->login($user);
         });
@@ -133,12 +138,12 @@ class ExampleTest extends AbstractTestCase
         $this->assertTrue($guard->getProvider() instanceof EloquentProvider);
 
         $user = $this->user(10);
-        $token = $guard->login($user, 'pc');
+        $token = $guard->login($user, [], 'pc');
         $this->assertTrue(is_string($token));
         $this->assertTrue($guard->check($token));
 
         // 抢线登录
-        $newToken = $guard->login($user, 'pc');
+        $newToken = $guard->login($user, [], 'pc');
         $this->assertTrue($newToken != $token);
         $this->assertTrue($guard->check($newToken));
 
@@ -146,7 +151,7 @@ class ExampleTest extends AbstractTestCase
         $this->assertTrue($guard->guest($token));
 
         // 第二个设备登录
-        $weappToken = $guard->login($user, 'weapp');
+        $weappToken = $guard->login($user, [], 'weapp');
         $this->assertTrue($guard->check($weappToken));
     }
 

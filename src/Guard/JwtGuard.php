@@ -64,12 +64,12 @@ class JwtGuard extends AbstractAuthGuard
         return null;
     }
 
-    public function login(Authenticatable $user)
+    public function login(Authenticatable $user, array $payload = [])
     {
-        $token = $this->getJwtManager()->make([
+        $token = $this->getJwtManager()->make(array_merge($payload, [
             'uid' => $user->getId(),
             's' => str_random(),
-        ])->token();
+        ]))->token();
 
         Context::set($this->resultKey($token), $user);
 
@@ -184,9 +184,9 @@ class JwtGuard extends AbstractAuthGuard
      * 获取 token 标识.
      * 为了性能，直接 md5.
      *
-     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
      * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
+     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @return mixed|string
      */
     protected function getJti(string $token): string

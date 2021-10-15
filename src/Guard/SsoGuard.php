@@ -45,10 +45,10 @@ class SsoGuard extends JwtGuard
         return $this->config['clients'] ?? ['unknown'];
     }
 
-    public function login(Authenticatable $user, string $client = null)
+    public function login(Authenticatable $user, array $payload = [], string $client = null)
     {
         $client = $client ?: $this->getClients()[0]; // 需要至少配置一个客户端
-        $token = parent::login($user);
+        $token = parent::login($user, $payload);
         $redisKey = str_replace('{uid}', (string) $user->getId(), $this->config['redis_key'] ?? 'u:token:{uid}');
 
         if (! empty($previousToken = $this->redis->hGet($redisKey, $client)) && $previousToken != $token) {
