@@ -175,6 +175,14 @@ class JwtGuard extends AbstractAuthGuard
         return false;
     }
 
+    public function getPayload($token = null): ?array
+    {
+        if ($token = $token ?? $this->parseToken()) {
+            return $this->getJwtManager()->justParse($token)->getPayload();
+        }
+        return null;
+    }
+
     public function getJwtManager(): JWTManager
     {
         return $this->jwtManager;
@@ -184,9 +192,9 @@ class JwtGuard extends AbstractAuthGuard
      * 获取 token 标识.
      * 为了性能，直接 md5.
      *
-     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
      * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
+     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
      * @return mixed|string
      */
     protected function getJti(string $token): string

@@ -72,10 +72,12 @@ class ExampleTest extends AbstractTestCase
             return $guard->guest();
         }));
 
-        $this->assertTrue($guard->getJwtManager()->justParse($guard->login($user, [
+        $customPayloadToken = $guard->login($user, [
             'sub' => 'qbhy0715',
             'iss' => 'hyperf-auth',
-        ]))->getPayload()['sub'] == 'qbhy0715');
+        ]);
+        $this->assertTrue($guard->getJwtManager()->justParse($customPayloadToken)->getPayload()['sub'] == 'qbhy0715');
+        $this->assertTrue($guard->getPayload($customPayloadToken)['sub'] == 'qbhy0715');
 
         $token = dev_clock('jwt login 方法', function () use ($auth, $user) {
             return $auth->login($user);
