@@ -18,12 +18,13 @@ use Qbhy\HyperfAuth\Exception\UserProviderException;
 /**
  * Class AuthManager.
  * @method login(Authenticatable $user)
- * @method null|Authenticatable user()
- * @method bool check()
+ * @method null|Authenticatable user($token = null)
+ * @method bool check($token = null)
  * @method logout()
  * @method string getName()
  * @method bool guest()
  * @method getProvider()
+ * @method id($token = null)
  * @mixin AuthGuard
  */
 class AuthManager
