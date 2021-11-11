@@ -83,6 +83,7 @@ class ExampleTest extends AbstractTestCase
             return $auth->login($user);
         });
 
+        $this->assertTrue($guard->id($token) == 1, '$guard->id() 方法错误');
         $this->assertTrue(dev_clock('jwt check 方法', function () use ($auth, $token) {
             return $auth->check($token);
         }));
@@ -129,6 +130,7 @@ class ExampleTest extends AbstractTestCase
         $user = $this->user();
 
         $this->assertTrue($guard->login($user));
+        $this->assertTrue($guard->id() == 1, '$guard->id() 方法错误');
         $this->assertTrue($guard->user() instanceof Authenticatable);
     }
 
@@ -146,6 +148,8 @@ class ExampleTest extends AbstractTestCase
 
         // 抢线登录
         $newToken = $guard->login($user, [], 'pc');
+
+        $this->assertTrue($guard->id($newToken) == 10, '$guard->id() 方法错误');
         $this->assertTrue($newToken != $token);
         $this->assertTrue($guard->check($newToken));
 

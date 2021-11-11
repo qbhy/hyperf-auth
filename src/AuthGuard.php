@@ -13,6 +13,8 @@ namespace Qbhy\HyperfAuth;
 
 interface AuthGuard
 {
+    public function id();
+
     public function login(Authenticatable $user);
 
     public function user(): ?Authenticatable;

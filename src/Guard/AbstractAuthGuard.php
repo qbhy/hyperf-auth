@@ -61,4 +61,9 @@ abstract class AbstractAuthGuard implements AuthGuard
     {
         return $this->userProvider;
     }
+
+    public function id()
+    {
+        return $this->user()->getId();
+    }
 }
