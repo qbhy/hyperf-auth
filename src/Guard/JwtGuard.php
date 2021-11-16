@@ -190,16 +190,19 @@ class JwtGuard extends AbstractAuthGuard
 
     public function id($token = null)
     {
-        return $this->user($token)->getId();
+        if ($token = $token ?? $this->parseToken()) {
+            return $this->getJwtManager()->parse($token)->getPayload()['uid'];
+        }
+        return null;
     }
 
     /**
      * 获取 token 标识.
      * 为了性能，直接 md5.
      *
-     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
      * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
+     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
      * @return mixed|string
      */
     protected function getJti(string $token): string

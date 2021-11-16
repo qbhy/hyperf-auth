@@ -76,6 +76,11 @@ class SessionGuard extends AbstractAuthGuard
         }
     }
 
+    public function id()
+    {
+        return $this->session->get($this->sessionKey());
+    }
+
     public function check(): bool
     {
         try {
