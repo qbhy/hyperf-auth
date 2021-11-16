@@ -62,7 +62,7 @@ return [
              * 可选配置
              * 默认使用的加密类
              */
-            'default' => Encrypter\PasswordHashEncrypter::class,
+            'default' => Encrypter\SHA1Encrypter::class,
 
             /*
              * 可选配置
@@ -131,7 +131,7 @@ return [
              * 可选配置
              * 默认使用的加密类
              */
-            'default' => Encrypter\PasswordHashEncrypter::class,
+            'default' => Encrypter\SHA1Encrypter::class,
 
             /*
              * 可选配置
