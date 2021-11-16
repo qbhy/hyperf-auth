@@ -257,7 +257,7 @@ $user = new \HyperfTest\DemoUser(1);
 $auth->login($user); // 默认使用 jwt 驱动，该方法将返回 token 字符串
 $auth->logout(); // 退出登录
 $auth->check(); // 检查是否登录
-$auth->id(); // 获取当前登录用户的id
+$auth->id(); // 获取当前登录用户的id，无需查数据库
 $auth->guest(); // 是否游客/是否未登录
 $auth->user(); // 若登录返回当前登录用户，否则返回null
 
@@ -265,10 +265,11 @@ $auth->user(); // 若登录返回当前登录用户，否则返回null
 $jwtGuard = $auth->guard('jwt');
 $jwtGuard->user('your token or null'); // jwt 驱动支持手动传入 token，如不传或者传null则从 request 中解析
 $jwtGuard->check('your token or null');
-$jwtGuard->id('your token or null');
+$jwtGuard->id('your token or null'); // 无需查数据库
 $jwtGuard->guest('your token or null');
 $jwtGuard->refresh('your token or null'); // 该方法返回新的 token 或者 null
 $jwtGuard->login($user, ['sub' => 'qbhy0715','iss' => 'hyperf-auth',]); // 自定义payload
+$jwtGuard->getPayload('your token or null'); // 获取自定义 payload
 
 $auth->guard()->login($user); // guard 方法不传参数或者传null都将使用默认值
 
