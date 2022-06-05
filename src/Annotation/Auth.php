@@ -11,6 +11,7 @@ declare(strict_types=1);
  */
 namespace Qbhy\HyperfAuth\Annotation;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Hyperf\Di\Annotation\AbstractAnnotation;
 
@@ -19,6 +20,7 @@ use Hyperf\Di\Annotation\AbstractAnnotation;
  * @Target({"METHOD", "CLASS"})
  * Class Auth
  */
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Auth extends AbstractAnnotation
 {
     /**
