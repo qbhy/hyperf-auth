@@ -156,6 +156,21 @@ class ExampleTest extends AbstractTestCase
         // 测试掉线的 token 还能不能用
         $this->assertTrue($guard->guest($token));
 
+        // ----------------------登陆并刷新token之后 被抢线登陆---------------------------------
+        // 登陆
+        $oneToken = $guard->login($user, [], 'pc');
+        $this->assertTrue($guard->check($oneToken));
+        // 刷新token
+        $towToken = $guard->refresh($oneToken);
+        $this->assertTrue(!$guard->check($oneToken));
+        $this->assertTrue($guard->check($towToken));
+        // 抢线登录
+        $threeToken = $guard->login($user, [], 'pc');
+        $this->assertTrue($guard->check($threeToken));
+        $this->assertTrue(!$guard->check($oneToken));
+        $this->assertTrue(!$guard->check($towToken));
+        // ----------------------登陆并刷新token之后 被抢线登陆---------------------------------
+
         // 第二个设备登录
         $weappToken = $guard->login($user, [], 'weapp');
         $this->assertTrue($guard->check($weappToken));
