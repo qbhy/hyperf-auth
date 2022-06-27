@@ -17,9 +17,8 @@ interface UserProvider
      * Retrieve a user by the given credentials.
      *
      * @param $credentials
-     * @return null|Authenticatable
      */
-    public function retrieveByCredentials($credentials);
+    public function retrieveByCredentials($credentials): ?Authenticatable;
 
     /**
      * Validate a user against the given credentials.

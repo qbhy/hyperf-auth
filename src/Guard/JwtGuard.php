@@ -11,8 +11,8 @@ declare(strict_types=1);
  */
 namespace Qbhy\HyperfAuth\Guard;
 
+use Hyperf\Context\Context;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\Utils\Context;
 use Hyperf\Utils\Str;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Exception\AuthException;
@@ -23,17 +23,11 @@ use Qbhy\SimpleJwt\JWTManager;
 
 class JwtGuard extends AbstractAuthGuard
 {
-    /**
-     * @var JWTManager
-     */
-    protected $jwtManager;
+    protected JWTManager $jwtManager;
 
-    /**
-     * @var RequestInterface
-     */
-    protected $request;
+    protected RequestInterface $request;
 
-    protected $headerName = 'Authorization';
+    protected mixed $headerName = 'Authorization';
 
     /**
      * JwtGuardAbstract constructor.

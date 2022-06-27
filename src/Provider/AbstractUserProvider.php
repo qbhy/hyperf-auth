@@ -15,15 +15,9 @@ use Qbhy\HyperfAuth\UserProvider;
 
 abstract class AbstractUserProvider implements UserProvider
 {
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
     /**
      * AbstractUserProvider constructor.

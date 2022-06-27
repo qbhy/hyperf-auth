@@ -21,15 +21,13 @@ class ForcedOfflineEvent
 {
     /**
      * 用户实例.
-     * @var Authenticatable
      */
-    public $user;
+    public Authenticatable $user;
 
     /**
      * 客户端标识.
-     * @var string
      */
-    public $client;
+    public string $client;
 
     /**
      * ForcedOfflineEvent constructor.

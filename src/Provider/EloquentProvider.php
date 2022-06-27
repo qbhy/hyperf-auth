@@ -15,7 +15,7 @@ use Qbhy\HyperfAuth\Authenticatable;
 
 class EloquentProvider extends AbstractUserProvider
 {
-    public function retrieveByCredentials($credentials)
+    public function retrieveByCredentials($credentials): ?Authenticatable
     {
         return call_user_func_array([$this->config['model'], 'retrieveById'], [$credentials]);
     }
