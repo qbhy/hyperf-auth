@@ -11,9 +11,9 @@ declare(strict_types=1);
  */
 namespace Qbhy\HyperfAuth\Guard;
 
+use Hyperf\Context\Context;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\Redis\Redis;
-use Hyperf\Utils\Context;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Events\ForcedOfflineEvent;
@@ -24,12 +24,12 @@ class SsoGuard extends JwtGuard
     /**
      * @var Redis
      */
-    protected $redis;
+    protected mixed $redis;
 
     /**
      * @var EventDispatcherInterface
      */
-    protected $eventDispatcher;
+    protected mixed $eventDispatcher;
 
     public function __construct(array $config, string $name, UserProvider $userProvider, RequestInterface $request)
     {
@@ -67,7 +67,7 @@ class SsoGuard extends JwtGuard
     {
         $token = parent::refresh($token);
 
-        if ($token){
+        if ($token) {
             $client = $client ?: $this->getClients()[0]; // 需要至少配置一个客户端
             $redisKey = str_replace('{uid}', (string) $this->id($token), $this->config['redis_key'] ?? 'u:token:{uid}');
             $this->redis->hSet($redisKey, $client, $token);

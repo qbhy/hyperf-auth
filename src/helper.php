@@ -19,7 +19,7 @@ if (! function_exists('auth')) {
      * @throws \Qbhy\HyperfAuth\Exception\GuardException
      * @return AuthManager|mixed|\Qbhy\HyperfAuth\AuthGuard
      */
-    function auth(?string $guard = null)
+    function auth(?string $guard = null): mixed
     {
         $auth = ApplicationContext::getContainer()->get(AuthManager::class);
 

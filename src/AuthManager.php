@@ -29,25 +29,13 @@ use Qbhy\HyperfAuth\Exception\UserProviderException;
  */
 class AuthManager
 {
-    /**
-     * @var string
-     */
-    protected $defaultDriver = 'default';
+    protected string $defaultDriver = 'default';
 
-    /**
-     * @var array
-     */
-    protected $guards = [];
+    protected array $guards = [];
 
-    /**
-     * @var array
-     */
-    protected $providers = [];
+    protected array $providers = [];
 
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
     public function __construct(ConfigInterface $config)
     {

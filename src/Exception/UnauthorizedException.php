@@ -16,9 +16,9 @@ use Throwable;
 
 class UnauthorizedException extends AuthException
 {
-    protected $guard;
+    protected ?AuthGuard $guard;
 
-    protected $statusCode = 401;
+    protected int $statusCode = 401;
 
     public function __construct(string $message, AuthGuard $guard = null, Throwable $previous = null)
     {
@@ -31,7 +31,7 @@ class UnauthorizedException extends AuthException
         return $this->statusCode;
     }
 
-    public function setStatusCode(int $statusCode)
+    public function setStatusCode(int $statusCode): static
     {
         $this->statusCode = $statusCode;
         return $this;

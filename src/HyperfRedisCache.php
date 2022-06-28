@@ -21,8 +21,7 @@ use Redis as RedisExt;
  */
 class HyperfRedisCache extends RedisCache
 {
-    /** @var null|Redis */
-    protected $redis;
+    protected ?Redis $redis;
 
     public function __construct(Redis $redis)
     {
@@ -42,10 +41,8 @@ class HyperfRedisCache extends RedisCache
 
     /**
      * Gets the redis instance used by the cache.
-     *
-     * @return null|Redis
      */
-    public function getRedis()
+    public function getRedis(): ?Redis
     {
         return $this->redis;
     }
@@ -61,7 +58,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doFetchMultiple(array $keys)
+    protected function doFetchMultiple(array $keys): array|bool
     {
         $fetchedItems = array_combine($keys, $this->redis->mget($keys));
 
@@ -86,7 +83,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doSaveMultiple(array $keysAndValues, $lifetime = 0)
+    protected function doSaveMultiple(array $keysAndValues, $lifetime = 0): bool
     {
         if ($lifetime) {
             // Keys have lifetime, use SETEX for each of them
@@ -106,7 +103,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doContains($id)
+    protected function doContains($id): bool
     {
         $exists = $this->redis->exists($id);
 
@@ -120,7 +117,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doSave($id, $data, $lifeTime = 0)
+    protected function doSave($id, $data, $lifeTime = 0): bool
     {
         if ($lifeTime > 0) {
             return $this->redis->setex($id, $lifeTime, $data);
@@ -132,7 +129,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doDelete($id)
+    protected function doDelete($id): bool
     {
         return $this->redis->del($id) >= 0;
     }
@@ -140,7 +137,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doDeleteMultiple(array $keys)
+    protected function doDeleteMultiple(array $keys): bool
     {
         return $this->redis->del($keys) >= 0;
     }
@@ -148,7 +145,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doFlush()
+    protected function doFlush(): bool
     {
         return $this->redis->flushDB();
     }
@@ -156,7 +153,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doGetStats()
+    protected function doGetStats(): ?array
     {
         $info = $this->redis->info();
 
@@ -176,7 +173,7 @@ class HyperfRedisCache extends RedisCache
      *
      * @return int One of the Redis::SERIALIZER_* constants
      */
-    protected function getSerializerValue()
+    protected function getSerializerValue(): int
     {
         if (defined('Redis::SERIALIZER_IGBINARY') && extension_loaded('igbinary')) {
             return RedisExt::SERIALIZER_IGBINARY;

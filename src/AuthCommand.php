@@ -14,18 +14,13 @@ namespace Qbhy\HyperfAuth;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 
-/**
- * @Command
- * Class AuthCommand
- */
+#[Command]
 class AuthCommand extends HyperfCommand
 {
     /**
      * 执行的命令行.
-     *
-     * @var string
      */
-    protected $name = 'gen:auth-env';
+    protected ?string $name = 'gen:auth-env';
 
     public function handle()
     {

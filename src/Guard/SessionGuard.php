@@ -11,8 +11,8 @@ declare(strict_types=1);
  */
 namespace Qbhy\HyperfAuth\Guard;
 
+use Hyperf\Context\Context;
 use Hyperf\Contract\SessionInterface;
-use Hyperf\Utils\Context;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
@@ -20,10 +20,7 @@ use Qbhy\HyperfAuth\UserProvider;
 
 class SessionGuard extends AbstractAuthGuard
 {
-    /**
-     * @var SessionInterface
-     */
-    protected $session;
+    protected SessionInterface $session;
 
     /**
      * JwtGuardAbstract constructor.

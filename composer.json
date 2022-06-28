@@ -23,11 +23,11 @@
         }
     },
     "require": {
-        "php": ">=7.2",
+        "php": ">=8.0",
         "ext-swoole": ">=4.4",
         "96qbhy/simple-jwt": "^v1.4.0",
-        "hyperf/cache": "^2.0",
-        "hyperf/di": "^2.0",
+        "hyperf/cache": "^3.0",
+        "hyperf/di": "^3.0",
         "ext-json": "*",
         "ext-redis": "*"
     },
@@ -37,21 +37,22 @@
     "require-dev": {
         "brainmaestro/composer-git-hooks": "^2.8",
         "friendsofphp/php-cs-fixer": "^2.14",
-        "hyperf/command": "^2.2",
-        "hyperf/config": "^2.0",
-        "hyperf/database": "^2.0",
-        "hyperf/event": "^2.2",
-        "hyperf/framework": "^2.0",
-        "hyperf/redis": "^2.0",
-        "hyperf/session": "^2.0",
-        "hyperf/testing": "^2.0",
-        "hyperf/utils": "^2.2",
+        "hyperf/command": "^3.0",
+        "hyperf/config": "^3.0",
+        "hyperf/database": "^3.0",
+        "hyperf/event": "^3.0",
+        "hyperf/framework": "^3.0",
+        "hyperf/redis": "^3.0",
+        "hyperf/session": "^3.0",
+        "hyperf/testing": "^3.0",
+        "hyperf/utils": "^3.0",
         "itsgoingd/clockwork": "^5.0",
         "phpstan/phpstan": "^0.12",
         "swoft/swoole-ide-helper": "dev-master",
         "symfony/console": "^5.3",
         "symfony/var-dumper": "^5.3"
     },
+    "minimum-stability": "dev",
     "config": {
         "sort-packages": true
     },

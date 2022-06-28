@@ -17,20 +17,11 @@ use Qbhy\HyperfAuth\UserProvider;
 
 abstract class AbstractAuthGuard implements AuthGuard
 {
-    /**
-     * @var array
-     */
-    protected $config;
+    protected array $config;
 
-    /**
-     * @var string
-     */
-    protected $name;
+    protected string $name;
 
-    /**
-     * @var UserProvider
-     */
-    protected $userProvider;
+    protected UserProvider $userProvider;
 
     /**
      * AbstractAuthGuard constructor.

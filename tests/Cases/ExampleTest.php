@@ -11,9 +11,9 @@ declare(strict_types=1);
  */
 namespace HyperfTest\Cases;
 
+use Hyperf\Context\Context;
 use Hyperf\HttpMessage\Server\Request;
 use Hyperf\Utils\ApplicationContext;
-use Hyperf\Utils\Context;
 use HyperfTest\DemoUser;
 use Psr\Http\Message\ServerRequestInterface;
 use Qbhy\HyperfAuth\AuthCommand;
@@ -162,13 +162,13 @@ class ExampleTest extends AbstractTestCase
         $this->assertTrue($guard->check($oneToken));
         // 刷新token
         $towToken = $guard->refresh($oneToken);
-        $this->assertTrue(!$guard->check($oneToken));
+        $this->assertTrue(! $guard->check($oneToken));
         $this->assertTrue($guard->check($towToken));
         // 抢线登录
         $threeToken = $guard->login($user, [], 'pc');
         $this->assertTrue($guard->check($threeToken));
-        $this->assertTrue(!$guard->check($oneToken));
-        $this->assertTrue(!$guard->check($towToken));
+        $this->assertTrue(! $guard->check($oneToken));
+        $this->assertTrue(! $guard->check($towToken));
         // ----------------------登陆并刷新token之后 被抢线登陆---------------------------------
 
         // 第二个设备登录

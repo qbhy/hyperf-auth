@@ -23,13 +23,10 @@ use Qbhy\HyperfAuth\Exception\UnauthorizedException;
  */
 class AuthMiddleware implements MiddlewareInterface
 {
-    protected $guards = [null];
+    protected array $guards = [null];
 
-    /**
-     * @Inject
-     * @var AuthManager
-     */
-    protected $auth;
+    #[Inject(AuthManager::class)]
+    protected AuthManager $auth;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

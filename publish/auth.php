@@ -35,9 +35,9 @@ return [
 
             /*
              * 以下是 simple-jwt 配置
-            * 必填
-            * jwt 服务端身份标识
-            */
+             * 必填
+             * jwt 服务端身份标识
+             */
             'secret' => env('SSO_JWT_SECRET'),
 
             /*
@@ -104,9 +104,9 @@ return [
 
             /*
              * 以下是 simple-jwt 配置
-            * 必填
-            * jwt 服务端身份标识
-            */
+             * 必填
+             * jwt 服务端身份标识
+             */
             'secret' => env('SIMPLE_JWT_SECRET'),
 
             /*
@@ -175,7 +175,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => \Qbhy\HyperfAuth\Provider\EloquentProvider::class,
-            'model' => App\Model\User::class, //  需要实现 Qbhy\HyperfAuth\Authenticatable 接口
+            'model' => App\Model\User::class, // 需要实现 Qbhy\HyperfAuth\Authenticatable 接口
         ],
     ],
 ];
