@@ -58,7 +58,7 @@ class HyperfRedisCache extends RedisCache
     /**
      * {@inheritdoc}
      */
-    protected function doFetchMultiple(array $keys): array|bool
+    protected function doFetchMultiple(array $keys): array | bool
     {
         $fetchedItems = array_combine($keys, $this->redis->mget($keys));
 
