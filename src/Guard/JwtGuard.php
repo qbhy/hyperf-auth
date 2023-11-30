@@ -13,7 +13,7 @@ namespace Qbhy\HyperfAuth\Guard;
 
 use Hyperf\Context\Context;
 use Hyperf\HttpServer\Contract\RequestInterface;
-use Hyperf\Utils\Str;
+use Hyperf\Stringable\Str;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
