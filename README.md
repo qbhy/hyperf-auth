@@ -21,7 +21,7 @@ hyperf 的 auth 组件，目前支持 jwt、session、sso 驱动。用户可以�
 ## 安装 - install
 
 ```bash
-$ composer require 96qbhy/hyperf-auth
+$ composer require itjackjw/hyperf-auth
 ```
 
 > hyperf 1.1 请使用 ^v1.0 版本
@@ -44,7 +44,7 @@ return [
 
 发布配置 vendor:publish
 ```bash
-php bin/hyperf.php vendor:publish 96qbhy/hyperf-auth
+php bin/hyperf.php vendor:publish itjackjw/hyperf-auth
 ```
 
 生成 `.env` 配置项 
@@ -289,4 +289,3 @@ $auth->guard('session')->login($user); // guard 方法不传参数或者传null�
 > 扩展教程请移步 [hyperf教程之hyperf-auth高级用法](https://mp.weixin.qq.com/s/jlbbN6zhWEVteimpi0mLjg)
 
 https://github.com/qbhy/hyperf-auth  
-qbhy0715@qq.com  
