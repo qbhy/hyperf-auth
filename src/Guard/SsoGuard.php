@@ -18,6 +18,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Events\ForcedOfflineEvent;
 use Qbhy\HyperfAuth\UserProvider;
+use function Hyperf\Support\make;
 
 class SsoGuard extends JwtGuard
 {
