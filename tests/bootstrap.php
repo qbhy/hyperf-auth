@@ -14,7 +14,7 @@ use Hyperf\Di\Container;
 use Hyperf\Di\Definition\DefinitionSourceFactory;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Request;
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use HyperfTest\DemoUser;
 use Qbhy\HyperfAuth\Guard\JwtGuard;
 use Qbhy\HyperfAuth\Guard\SessionGuard;
