@@ -9,11 +9,12 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
+
 namespace HyperfTest\Cases;
 
+use Hyperf\Context\ApplicationContext;
 use Hyperf\Context\Context;
 use Hyperf\HttpMessage\Server\Request;
-use Hyperf\Context\ApplicationContext;
 use HyperfTest\DemoUser;
 use Psr\Http\Message\ServerRequestInterface;
 use Qbhy\HyperfAuth\AuthCommand;

@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
+
 namespace Qbhy\HyperfAuth\Guard;
 
 use Hyperf\Context\Context;
@@ -73,7 +74,7 @@ class JwtGuard extends AbstractAuthGuard
     /**
      * 获取用于存到 context 的 key.
      *
-     * @param $token
+     * @param mixed $token
      * @return string
      */
     public function resultKey($token)
@@ -194,10 +195,10 @@ class JwtGuard extends AbstractAuthGuard
      * 获取 token 标识.
      * 为了性能，直接 md5.
      *
+     * @return mixed|string
      * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
      * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
      * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
-     * @return mixed|string
      */
     protected function getJti(string $token): string
     {

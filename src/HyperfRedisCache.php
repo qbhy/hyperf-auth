@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
+
 namespace Qbhy\HyperfAuth;
 
 use Doctrine\Common\Cache\Cache;
@@ -35,7 +36,7 @@ class HyperfRedisCache extends RedisCache
      */
     public function setRedis($redis)
     {
-//        $redis->setOption(RedisExt::OPT_SERIALIZER, $this->getSerializerValue());
+        //        $redis->setOption(RedisExt::OPT_SERIALIZER, $this->getSerializerValue());
         $this->redis = $redis;
     }
 
@@ -47,18 +48,12 @@ class HyperfRedisCache extends RedisCache
         return $this->redis;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doFetch($id)
     {
         return $this->redis->get($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function doFetchMultiple(array $keys): array | bool
+    protected function doFetchMultiple(array $keys): array|bool
     {
         $fetchedItems = array_combine($keys, $this->redis->mget($keys));
 
@@ -80,9 +75,6 @@ class HyperfRedisCache extends RedisCache
         return $fetchedItems;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doSaveMultiple(array $keysAndValues, $lifetime = 0): bool
     {
         if ($lifetime) {
@@ -100,9 +92,6 @@ class HyperfRedisCache extends RedisCache
         return (bool) $this->redis->mset($keysAndValues);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doContains($id): bool
     {
         $exists = $this->redis->exists($id);
@@ -114,9 +103,6 @@ class HyperfRedisCache extends RedisCache
         return $exists > 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doSave($id, $data, $lifeTime = 0): bool
     {
         if ($lifeTime > 0) {
@@ -126,33 +112,21 @@ class HyperfRedisCache extends RedisCache
         return $this->redis->set($id, $data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doDelete($id): bool
     {
         return $this->redis->del($id) >= 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doDeleteMultiple(array $keys): bool
     {
         return $this->redis->del($keys) >= 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doFlush(): bool
     {
         return $this->redis->flushDB();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doGetStats(): ?array
     {
         $info = $this->redis->info();

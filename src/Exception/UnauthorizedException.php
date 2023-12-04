@@ -9,10 +9,10 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
+
 namespace Qbhy\HyperfAuth\Exception;
 
 use Qbhy\HyperfAuth\AuthGuard;
-use Throwable;
 
 class UnauthorizedException extends AuthException
 {
@@ -20,7 +20,7 @@ class UnauthorizedException extends AuthException
 
     protected int $statusCode = 401;
 
-    public function __construct(string $message, AuthGuard $guard = null, Throwable $previous = null)
+    public function __construct(string $message, AuthGuard $guard = null, \Throwable $previous = null)
     {
         parent::__construct($message, 401, $previous);
         $this->guard = $guard;

@@ -10,11 +10,11 @@ declare(strict_types=1);
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
 use Doctrine\Common\Cache\FilesystemCache;
+use Hyperf\Context\ApplicationContext;
 use Hyperf\Di\Container;
 use Hyperf\Di\Definition\DefinitionSourceFactory;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Request;
-use Hyperf\Context\ApplicationContext;
 use HyperfTest\DemoUser;
 use Qbhy\HyperfAuth\Guard\JwtGuard;
 use Qbhy\HyperfAuth\Guard\SessionGuard;

@@ -9,7 +9,7 @@ This file is part of qbhy/hyperf-auth.
 @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
 EOF;
 
-return PhpCsFixer\Config::create()
+return (new PhpCsFixer\Config())
     ->setRiskyAllowed(true)
     ->setRules([
         '@PSR2' => true,
@@ -17,7 +17,7 @@ return PhpCsFixer\Config::create()
         '@DoctrineAnnotation' => true,
         '@PhpCsFixer' => true,
         'header_comment' => [
-            'commentType' => 'PHPDoc',
+            'comment_type' => 'PHPDoc',
             'header' => $header,
             'separate' => 'none',
             'location' => 'after_declare_strict',
@@ -66,7 +66,7 @@ return PhpCsFixer\Config::create()
         'combine_consecutive_unsets' => true,
         'declare_strict_types' => true,
         'linebreak_after_opening_tag' => true,
-        'lowercase_constants' => true,
+        'constant_case' => ['case' => 'lower'],
         'lowercase_static_reference' => true,
         'no_useless_else' => true,
         'no_unused_imports' => true,

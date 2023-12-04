@@ -9,8 +9,7 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
+
 namespace Qbhy\HyperfAuth\Exception;
 
-abstract class AuthException extends \RuntimeException
-{
-}
+abstract class AuthException extends \RuntimeException {}

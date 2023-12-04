@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
+
 namespace Qbhy\HyperfAuth\Guard;
 
 use Hyperf\Context\Context;
@@ -18,6 +19,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Events\ForcedOfflineEvent;
 use Qbhy\HyperfAuth\UserProvider;
+
 use function Hyperf\Support\make;
 
 class SsoGuard extends JwtGuard

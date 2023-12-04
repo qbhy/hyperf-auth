@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
+
 namespace HyperfTest;
 
 use Qbhy\HyperfAuth\Authenticatable;
@@ -19,7 +20,7 @@ class DemoUser implements Authenticatable
 
     /**
      * DemoUser constructor.
-     * @param $id
+     * @param mixed $id
      */
     public function __construct($id)
     {

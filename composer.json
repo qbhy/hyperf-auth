@@ -35,7 +35,7 @@
     },
     "require-dev": {
         "brainmaestro/composer-git-hooks": "^2.8",
-        "friendsofphp/php-cs-fixer": "^2.14",
+        "friendsofphp/php-cs-fixer": "^3.4",
         "hyperf/command": "^3.1",
         "hyperf/config": "^3.1",
         "hyperf/database": "^3.1",
