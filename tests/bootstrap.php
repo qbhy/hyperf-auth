@@ -14,11 +14,12 @@ use Hyperf\Di\Container;
 use Hyperf\Di\Definition\DefinitionSourceFactory;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Request;
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
 use HyperfTest\DemoUser;
 use Qbhy\HyperfAuth\Guard\JwtGuard;
 use Qbhy\HyperfAuth\Guard\SessionGuard;
 use Qbhy\HyperfAuth\Provider\EloquentProvider;
+use function Hyperf\Support\make;
 
 require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
 define('BASE_PATH', $dir = dirname(__DIR__, 1));
@@ -36,7 +37,7 @@ $container->define(\Psr\SimpleCache\CacheInterface::class, function () use ($con
 
 $container->define(\Hyperf\Contract\SessionInterface::class, function () {
     return new Hyperf\Session\Session('testing', new \Hyperf\Session\Handler\FileHandler(
-        new \Hyperf\Utils\Filesystem\Filesystem(),
+        new \Hyperf\Support\Filesystem\Filesystem(),
         BASE_PATH . '/runtime/testing',
         10
     ));
