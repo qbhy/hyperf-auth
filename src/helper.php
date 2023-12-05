@@ -9,15 +9,19 @@ declare(strict_types=1);
  * @contact  qbhy0715@qq.com
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
-use Hyperf\Utils\ApplicationContext;
+use Hyperf\Context\ApplicationContext;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use Qbhy\HyperfAuth\AuthGuard;
 use Qbhy\HyperfAuth\AuthManager;
 
 if (! function_exists('auth')) {
     /**
      * 建议视图中使用该函数，其他地方请使用注入.
-     * @throws \Qbhy\HyperfAuth\Exception\UserProviderException
-     * @throws \Qbhy\HyperfAuth\Exception\GuardException
-     * @return AuthManager|mixed|\Qbhy\HyperfAuth\AuthGuard
+     * @param string|null $guard
+     * @return AuthManager|mixed|AuthGuard
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     function auth(?string $guard = null): mixed
     {

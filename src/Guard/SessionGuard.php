@@ -87,7 +87,7 @@ class SessionGuard extends AbstractAuthGuard
         }
     }
 
-    public function logout()
+    public function logout(): bool
     {
         Context::set($this->resultKey(), null);
         return (bool) $this->session->remove($this->sessionKey());

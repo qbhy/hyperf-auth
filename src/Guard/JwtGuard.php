@@ -18,6 +18,9 @@ use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\HyperfAuth\UserProvider;
+use Qbhy\SimpleJwt\Exceptions\InvalidTokenException;
+use Qbhy\SimpleJwt\Exceptions\JWTException;
+use Qbhy\SimpleJwt\Exceptions\SignatureException;
 use Qbhy\SimpleJwt\Exceptions\TokenExpiredException;
 use Qbhy\SimpleJwt\JWTManager;
 
@@ -58,7 +61,7 @@ class JwtGuard extends AbstractAuthGuard
         return null;
     }
 
-    public function login(Authenticatable $user, array $payload = [])
+    public function login(Authenticatable $user, array $payload = []): string
     {
         $token = $this->getJwtManager()->make(array_merge($payload, [
             'uid' => $user->getId(),
@@ -75,8 +78,11 @@ class JwtGuard extends AbstractAuthGuard
      *
      * @param $token
      * @return string
+     * @throws TokenExpiredException
+     * @throws InvalidTokenException
+     * @throws SignatureException
      */
-    public function resultKey($token)
+    public function resultKey($token): string
     {
         return $this->name . '.auth.result' . $this->getJti($token);
     }
@@ -131,10 +137,10 @@ class JwtGuard extends AbstractAuthGuard
     /**
      * 刷新 token，旧 token 会失效.
      *
-     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
-     * @throws \Qbhy\SimpleJwt\Exceptions\JWTException
-     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
-     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
+     * @throws InvalidTokenException
+     * @throws JWTException
+     * @throws SignatureException
+     * @throws TokenExpiredException
      */
     public function refresh(?string $token = null): ?string
     {
@@ -157,7 +163,7 @@ class JwtGuard extends AbstractAuthGuard
         return null;
     }
 
-    public function logout($token = null)
+    public function logout($token = null): bool
     {
         if ($token = $token ?? $this->parseToken()) {
             Context::set($this->resultKey($token), null);
@@ -194,10 +200,8 @@ class JwtGuard extends AbstractAuthGuard
      * 获取 token 标识.
      * 为了性能，直接 md5.
      *
-     * @throws \Qbhy\SimpleJwt\Exceptions\SignatureException
-     * @throws \Qbhy\SimpleJwt\Exceptions\TokenExpiredException
-     * @throws \Qbhy\SimpleJwt\Exceptions\InvalidTokenException
-     * @return mixed|string
+     * @param string $token
+     * @return string
      */
     protected function getJti(string $token): string
     {

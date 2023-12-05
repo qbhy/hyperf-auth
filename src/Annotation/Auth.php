@@ -21,6 +21,5 @@ class Auth extends AbstractAnnotation
 
     public function __construct($value = null)
     {
-        parent::__construct($value);
     }
 }

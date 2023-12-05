@@ -33,7 +33,7 @@ class HyperfRedisCache extends RedisCache
      *
      * @param mixed $redis
      */
-    public function setRedis($redis)
+    public function setRedis($redis): void
     {
 //        $redis->setOption(RedisExt::OPT_SERIALIZER, $this->getSerializerValue());
         $this->redis = $redis;

@@ -18,7 +18,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Qbhy\HyperfAuth\Authenticatable;
 use Qbhy\HyperfAuth\Events\ForcedOfflineEvent;
 use Qbhy\HyperfAuth\UserProvider;
-
+use function Hyperf\Support\make;
 class SsoGuard extends JwtGuard
 {
     /**
@@ -45,7 +45,7 @@ class SsoGuard extends JwtGuard
         return $this->config['clients'] ?? ['unknown'];
     }
 
-    public function login(Authenticatable $user, array $payload = [], string $client = null)
+    public function login(Authenticatable $user, array $payload = [], string $client = null): string
     {
         $client = $client ?: $this->getClients()[0]; // 需要至少配置一个客户端
         $token = parent::login($user, $payload);
