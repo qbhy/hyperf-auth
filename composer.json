@@ -24,7 +24,7 @@
     },
     "require": {
         "php": ">=8.1",
-        "96qbhy/simple-jwt": "dev-master|dev-main",
+        "96qbhy/simple-jwt": "^v1.4.0",
         "hyperf/cache": "~3.1.0",
         "hyperf/di": "~3.1.0",
         "ext-json": "*",
@@ -79,10 +79,6 @@
         "packagist": {
             "type": "composer",
             "url": "https://mirrors.aliyun.com/composer/"
-        },
-        "96qbhy":{
-            "type": "vcs",
-            "url": "https://github.com/haozing/simple-jwt"
         }
     }
 }
