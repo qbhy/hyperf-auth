@@ -24,7 +24,7 @@
     },
     "require": {
         "php": ">=8.1",
-        "96qbhy/simple-jwt": "^v1.4.0",
+        "96qbhy/simple-jwt": "^v1.5",
         "hyperf/cache": "~3.1.0",
         "hyperf/di": "~3.1.0",
         "ext-json": "*",
