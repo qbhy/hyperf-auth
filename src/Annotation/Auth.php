@@ -17,10 +17,8 @@ use Hyperf\Di\Annotation\AbstractAnnotation;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class Auth extends AbstractAnnotation
 {
-    public string $value;
-
-    public function __construct($value = null)
+    public function __construct(public ?string $value = null)
     {
-        parent::__construct($value);
+
     }
 }
