@@ -10,7 +10,9 @@ declare(strict_types=1);
  * @license  https://github.com/qbhy/hyperf-auth/blob/master/LICENSE
  */
 use Qbhy\SimpleJwt\Encoders;
-use Qbhy\SimpleJwt\EncryptAdapters as Encrypter;
+use Qbhy\SimpleJwt\EncryptAdapters as Encryptor;
+use function Hyperf\Support\env;
+use function Hyperf\Support\make;
 
 return [
     'default' => [
@@ -62,17 +64,17 @@ return [
              * 可选配置
              * 默认使用的加密类
              */
-            'default' => Encrypter\SHA1Encrypter::class,
+            'default' => Encryptor\SHA1Encrypter::class,
 
             /*
              * 可选配置
-             * 加密类必须实现 Qbhy\SimpleJwt\Interfaces\Encrypter 接口
+             * 加密类必须实现 Qbhy\SimpleJwt\Interfaces\Encryptor 接口
              */
             'drivers' => [
-                Encrypter\PasswordHashEncrypter::alg() => Encrypter\PasswordHashEncrypter::class,
-                Encrypter\CryptEncrypter::alg() => Encrypter\CryptEncrypter::class,
-                Encrypter\SHA1Encrypter::alg() => Encrypter\SHA1Encrypter::class,
-                Encrypter\Md5Encrypter::alg() => Encrypter\Md5Encrypter::class,
+                Encryptor\PasswordHashEncrypter::alg() => Encryptor\PasswordHashEncrypter::class,
+                Encryptor\CryptEncrypter::alg() => Encryptor\CryptEncrypter::class,
+                Encryptor\SHA1Encrypter::alg() => Encryptor\SHA1Encrypter::class,
+                Encryptor\Md5Encrypter::alg() => Encryptor\Md5Encrypter::class,
             ],
 
             /*
@@ -131,17 +133,17 @@ return [
              * 可选配置
              * 默认使用的加密类
              */
-            'default' => Encrypter\SHA1Encrypter::class,
+            'default' => Encryptor\SHA1Encrypter::class,
 
             /*
              * 可选配置
-             * 加密类必须实现 Qbhy\SimpleJwt\Interfaces\Encrypter 接口
+             * 加密类必须实现 Qbhy\SimpleJwt\Interfaces\Encryptor 接口
              */
             'drivers' => [
-                Encrypter\PasswordHashEncrypter::alg() => Encrypter\PasswordHashEncrypter::class,
-                Encrypter\CryptEncrypter::alg() => Encrypter\CryptEncrypter::class,
-                Encrypter\SHA1Encrypter::alg() => Encrypter\SHA1Encrypter::class,
-                Encrypter\Md5Encrypter::alg() => Encrypter\Md5Encrypter::class,
+                Encryptor\PasswordHashEncrypter::alg() => Encryptor\PasswordHashEncrypter::class,
+                Encryptor\CryptEncrypter::alg() => Encryptor\CryptEncrypter::class,
+                Encryptor\SHA1Encrypter::alg() => Encryptor\SHA1Encrypter::class,
+                Encryptor\Md5Encrypter::alg() => Encryptor\Md5Encrypter::class,
             ],
 
             /*
