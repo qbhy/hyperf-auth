@@ -20,6 +20,7 @@ use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\HyperfAuth\UserProvider;
 use Qbhy\SimpleJwt\Exceptions\TokenExpiredException;
 use Qbhy\SimpleJwt\JWTManager;
+use function Hyperf\Support\env;
 
 class JwtGuard extends AbstractAuthGuard
 {
