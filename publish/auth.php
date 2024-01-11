@@ -11,6 +11,8 @@ declare(strict_types=1);
  */
 use Qbhy\SimpleJwt\Encoders;
 use Qbhy\SimpleJwt\EncryptAdapters as Encrypter;
+use function Hyperf\Support\env;
+use function Hyperf\Support\make;
 
 return [
     'default' => [
